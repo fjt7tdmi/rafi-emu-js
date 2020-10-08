@@ -1,0 +1,3 @@
+[submodule "rafi-prebuilt-binary"]
+	path = rafi-prebuilt-binary
+	url = git@github.com:fjt7tdmi/rafi-prebuilt-binary.git

@@ -349,7 +349,7 @@ function pick(insn, lsb, width = 1) {
     return (insn >> lsb) & ((1 << width) - 1);
 }
 
-function sign_extend(width, value) {
+function signExtend(width, value) {
     const sign = (value >> (width - 1)) & 1;
     const mask = (1 << width) - 1;
 
@@ -372,17 +372,17 @@ function decode(insn) {
     const shamt = (insn >> 20) & 0x1f;
     const funct7 = (insn >> 25) & 0x7f;
 
-    const imm_jal = sign_extend(21,
+    const imm_jal = signExtend(21,
         pick(insn, 31) << 20 |
         pick(insn, 21, 10) << 1 |
         pick(insn, 20) << 11 |
         pick(insn, 12, 8) << 12);
-    const imm_branch = sign_extend(13,
+    const imm_branch = signExtend(13,
         pick(insn, 31) << 12 |
         pick(insn, 7) << 11 |
         pick(insn, 25, 6) << 5 |
         pick(insn, 8, 4) << 1);
-    const imm_store = sign_extend(12,
+    const imm_store = signExtend(12,
         pick(insn, 25, 7) << 5 |
         pick(insn, 7, 5));
 
@@ -395,7 +395,7 @@ function decode(insn) {
         return new JAL(rd, imm_jal);
     case 0b1100111:
         if (funct3 == 0b000) {
-            return new JALR(rd, rs1, sign_extend(12, pick(insn, 20, 12)));    
+            return new JALR(rd, rs1, signExtend(12, pick(insn, 20, 12)));    
         }
         else {
             return new UnknownOp();
@@ -418,15 +418,15 @@ function decode(insn) {
         }
     case 0b0000011:
         if (funct3 == 0b000) {
-            return new LB(rd, rs1, sign_extend(12, pick(insn, 20, 12)));
+            return new LB(rd, rs1, signExtend(12, pick(insn, 20, 12)));
         } else if (funct3 == 0b001) {
-            return new LH(rd, rs1, sign_extend(12, pick(insn, 20, 12)));
+            return new LH(rd, rs1, signExtend(12, pick(insn, 20, 12)));
         } else if (funct3 == 0b010) {
-            return new LW(rd, rs1, sign_extend(12, pick(insn, 20, 12)));
+            return new LW(rd, rs1, signExtend(12, pick(insn, 20, 12)));
         } else if (funct3 == 0b100) {
-            return new LBU(rd, rs1, sign_extend(12, pick(insn, 20, 12)));
+            return new LBU(rd, rs1, signExtend(12, pick(insn, 20, 12)));
         } else if (funct3 == 0b101) {
-            return new LHU(rd, rs1, sign_extend(12, pick(insn, 20, 12)));
+            return new LHU(rd, rs1, signExtend(12, pick(insn, 20, 12)));
         } else {
             return new UnknownOp();
         }
@@ -442,23 +442,23 @@ function decode(insn) {
         }
     case 0b0010011:
         if (funct3 == 0b000) {
-            return new ADDI(rd, rs1, sign_extend(12, pick(insn, 20, 12)));
+            return new ADDI(rd, rs1, signExtend(12, pick(insn, 20, 12)));
         } else if (funct3 == 0b001 && funct7 == 0b0000000) {
             return new SLLI(rd, rs1, shamt);
         } else if (funct3 == 0b010) {
-            return new SLTI(rd, rs1, sign_extend(12, pick(insn, 20, 12)));
+            return new SLTI(rd, rs1, signExtend(12, pick(insn, 20, 12)));
         } else if (funct3 == 0b011) {
-            return new SLTIU(rd, rs1, sign_extend(12, pick(insn, 20, 12)));
+            return new SLTIU(rd, rs1, signExtend(12, pick(insn, 20, 12)));
         } else if (funct3 == 0b100) {
-            return new XORI(rd, rs1, sign_extend(12, pick(insn, 20, 12)));
+            return new XORI(rd, rs1, signExtend(12, pick(insn, 20, 12)));
         } else if (funct3 == 0b101 && funct7 == 0b0000000) {
             return new SRLI(rd, rs1, shamt);
         } else if (funct3 == 0b101 && funct7 == 0b0100000) {
             return new SRAI(rd, rs1, shamt);
         } else if (funct3 == 0b110) {
-            return new ORI(rd, rs1, sign_extend(12, pick(insn, 20, 12)));
+            return new ORI(rd, rs1, signExtend(12, pick(insn, 20, 12)));
         } else if (funct3 == 0b111) {
-            return new ANDI(rd, rs1, sign_extend(12, pick(insn, 20, 12)));
+            return new ANDI(rd, rs1, signExtend(12, pick(insn, 20, 12)));
         } else {
             return new UnknownOp();
         }

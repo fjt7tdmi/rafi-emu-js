@@ -777,11 +777,11 @@ class CSRRC {
     }
     toString() {
         if (this.rs1 == 0) {
-            return `csrr ${IntRegNames[this.rd]},${getCsrName(this.csr)}`;
+            return `csrc ${IntRegNames[this.rd]},${getCsrName(this.csr)}`;
         } else if (this.rd == 0) {
-            return `csrr ${getCsrName(this.csr)},${IntRegNames[this.rs1]}`;
+            return `csrc ${getCsrName(this.csr)},${IntRegNames[this.rs1]}`;
         } else {
-            return `csrrs ${IntRegNames[this.rd]},${getCsrName(this.csr)},${IntRegNames[this.rs1]}`;
+            return `csrrc ${IntRegNames[this.rd]},${getCsrName(this.csr)},${IntRegNames[this.rs1]}`;
         }
     }
 }
@@ -828,6 +828,62 @@ class CSRRCI {
         } else {
             return `csrrci ${IntRegNames[this.rd]},${getCsrName(this.csr)},${this.uimm}`;
         }
+    }
+}
+
+class URET {
+    constructor() {
+    }
+    toString() {
+        return `uret`;
+    }
+}
+
+class SRET {
+    constructor() {
+    }
+    toString() {
+        return `sret`;
+    }
+}
+
+class MRET {
+    constructor() {
+    }
+    toString() {
+        return `mret`;
+    }
+}
+
+class WFI {
+    constructor() {
+    }
+    toString() {
+        return `wfi`;
+    }
+}
+
+class SFENCE_VMA {
+    constructor() {
+    }
+    toString() {
+        return `sfence.vma ${IntRegNames[this.rs1]},${IntRegNames[this.rs2]}`;
+    }
+}
+
+class HFENCE_BVMA {
+    constructor() {
+    }
+    toString() {
+        return `hfence.bvma ${IntRegNames[this.rs1]},${IntRegNames[this.rs2]}`;
+    }
+}
+
+class HFENCE_GVMA {
+    constructor() {
+    }
+    toString() {
+        return `hfence.gvma ${IntRegNames[this.rs1]},${IntRegNames[this.rs2]}`;
     }
 }
 
@@ -967,10 +1023,24 @@ function decode(insn) {
             return new UNKNOWN_OP();
         }
     case 0b1110011:
-        if (funct12 == 0b0000_0000_0000 && rs1 == 0b000 && funct3 == 0b000 && rd == 0b00000) {
+        if (funct3 == 0b000 && funct12 == 0b0000_0000_0000 && rs1 == 0 && rd == 0) {
             return new ECALL();
-        } else if (funct12 == 0b0000_0000_0001 && rs1 == 0b000 && funct3 == 0b000 && rd == 0b00000) {
+        } else if (funct3 == 0b000 &&funct12 == 0b0000_0000_0001 && rs1 == 0 &&  rd == 0) {
             return new EBREAK();
+        } else if (funct3 == 0b000 && funct7 == 0b0000000 && rs2 == 0b00010 && rs1 == 0 && rd == 0) {
+            return new URET();
+        } else if (funct3 == 0b000 && funct7 == 0b0001000 && rs2 == 0b00010 && rs1 == 0 && rd == 0) {
+            return new SRET();
+        } else if (funct3 == 0b000 && funct7 == 0b0011000 && rs2 == 0b00010 && rs1 == 0 && rd == 0) {
+            return new MRET();
+        } else if (funct3 == 0b000 && funct7 == 0b0001000 && rs2 == 0b00101 && rs1 == 0 && rd == 0) {
+            return new WFI();
+        } else if (funct3 == 0b000 && funct7 == 0b0001001 && rd == 0) {
+            return new SFENCE_VMA();
+        } else if (funct3 == 0b000 && funct7 == 0b0010001 && rd == 0) {
+            return new HFENCE_BVMA();
+        } else if (funct3 == 0b000 && funct7 == 0b1010001 && rd == 0) {
+            return new HFENCE_GVMA();
         } else if (funct3 == 0b001) {
             return new CSRRW(csr, rd, rs1);
         } else if (funct3 == 0b010) {

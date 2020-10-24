@@ -1,0 +1,24 @@
+{
+  "name": "rafi-emu-ts",
+  "version": "1.0.0",
+  "description": "Toy RISCV emulator by TypeScript + Node.js",
+  "main": "emu.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fjt7tdmi/rafi-emu-ts.git"
+  },
+  "author": "Akifumi Fujita",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/fjt7tdmi/rafi-emu-ts/issues"
+  },
+  "homepage": "https://github.com/fjt7tdmi/rafi-emu-ts",
+  "dependencies": {
+    "@types/node": "^14.14.2",
+    "ts-node": "^9.0.0",
+    "typescript": "^4.0.3"
+  }
+}

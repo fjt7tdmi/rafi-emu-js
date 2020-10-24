@@ -10,128 +10,148 @@ const IntRegNames = [
 //
 // Ops
 //
-function UnknownOp() {
-    this.toString = function() {
+class UnknownOp {
+    toString() {
         return "UnknownOp";
     }
 }
 
-function LUI(rd, imm) {
-    this.rd = rd;
-    this.imm = imm;
-    this.toString = function() {
-        return `lui ${IntRegNames[rd]},${imm}`;
+class LUI {
+    constructor(rd, imm) {
+        this.rd = rd;
+        this.imm = imm;
+    }
+    toString() {
+        return `lui ${IntRegNames[this.rd]},${this.imm}`;
     }
 }
 
-function AUIPC(rd, imm) {
-    this.rd = rd;
-    this.imm = imm;
-    this.toString = function() {
-        return `auipc ${IntRegNames[rd]},${imm}`;
+class AUIPC {
+    constructor(rd, imm) {
+        this.rd = rd;
+        this.imm = imm;
+    }
+    toString() {
+        return `auipc ${IntRegNames[this.rd]},${this.imm}`;
     }
 }
 
-function JAL(rd, imm) {
-    this.rd = rd;
-    this.imm = imm;
-    this.toString = function() {
-        if (rd == 0) {
-            return `j #${imm}`
+class JAL {
+    constructor(rd, imm) {
+        this.rd = rd;
+        this.imm = imm;        
+    }
+    toString() {
+        if (this.rd == 0) {
+            return `j #${this.imm}`;
         } else {
-            return `jal ${IntRegNames[rd]},${imm}`;
+            return `jal ${IntRegNames[this.rd]},${this.imm}`;
         }
     }
 }
 
-function JALR(rd, rs1, imm) {
-    this.rd = rd;
-    this.rs1 = rs1;
-    this.imm = imm;
-    this.toString = function() {
-        if (rd == 0) {
-            return `jr ${IntRegNames[rs1]},${imm}`;
+class JALR {
+    constructor(rd, rs1, imm) {
+        this.rd = rd;
+        this.rs1 = rs1;
+        this.imm = imm;
+    }
+    toString() {
+        if (this.rd == 0) {
+            return `jr ${IntRegNames[this.rs1]},${this.imm}`;
         } else {
-            return `jalr ${IntRegNames[rd]},${IntRegNames[rs1]},${imm}`;
+            return `jalr ${IntRegNames[this.rd]},${IntRegNames[this.rs1]},${this.imm}`;
+        }
+    };
+}
+
+class BEQ {
+    constructor(rs1, rs2, imm) {
+        this.rs1 = rs1;
+        this.rs2 = rs2;
+        this.imm = imm;
+    }
+    toString() {
+        if (this.rs1 == 0) {
+            return `beqz ${IntRegNames[this.rs2]}, #${this.imm}`;
+        } else if (this.rs2 == 0) {
+            return `beqz ${IntRegNames[this.rs1]}, #${this.imm}`;
+        } else {
+            return `beq ${IntRegNames[this.rs1]},${IntRegNames[this.rs2]},#${this.imm}`;
         }
     }
 }
 
-function BEQ(rs1, rs2, imm) {
-    this.rs1 = rs1;
-    this.rs2 = rs2;
-    this.imm = imm;
-    this.toString = function() {
-        if (rs1 == 0) {
-            return `beqz ${IntRegNames[rs2]}, #${imm}`;
-        } else if (rs2 == 0) {
-            return `beqz ${IntRegNames[rs1]}, #${imm}`;
+class BNE {
+    constructor(rs1, rs2, imm) {
+        this.rs1 = rs1;
+        this.rs2 = rs2;
+        this.imm = imm;
+    }
+    toString() {
+        if (this.rs1 == 0) {
+            return `bnez ${IntRegNames[this.rs2]}, #${this.imm}`;
+        } else if (this.rs2 == 0) {
+            return `bnez ${IntRegNames[this.rs1]}, #${this.imm}`;
         } else {
-            return `beq ${IntRegNames[rs1]},${IntRegNames[rs2]},#${imm}`;
+            return `bne ${IntRegNames[this.rs1]},${IntRegNames[this.rs2]},#${this.imm}`;
         }
     }
 }
 
-function BNE(rs1, rs2, imm) {
-    this.rs1 = rs1;
-    this.rs2 = rs2;
-    this.imm = imm;
-    this.toString = function() {
-        if (rs1 == 0) {
-            return `bnez ${IntRegNames[rs2]}, #${imm}`;
-        } else if (rs2 == 0) {
-            return `bnez ${IntRegNames[rs1]}, #${imm}`;
+class BLT {
+    constructor(rs1, rs2, imm) {
+        this.rs1 = rs1;
+        this.rs2 = rs2;
+        this.imm = imm;
+    }
+    toString() {
+        if (this.rs1 == 0) {
+            return `bltz ${IntRegNames[this.rs2]}, #${this.imm}`;
+        } else if (this.rs2 == 0) {
+            return `bltz ${IntRegNames[this.rs1]}, #${this.imm}`;
         } else {
-            return `bne ${IntRegNames[rs1]},${IntRegNames[rs2]},#${imm}`;
+            return `blt ${IntRegNames[this.rs1]},${IntRegNames[this.rs2]},#${this.imm}`;
         }
     }
 }
 
-function BLT(rs1, rs2, imm) {
-    this.rs1 = rs1;
-    this.rs2 = rs2;
-    this.imm = imm;
-    this.toString = function() {
-        if (rs1 == 0) {
-            return `bltz ${IntRegNames[rs2]}, #${imm}`;
-        } else if (rs2 == 0) {
-            return `bltz ${IntRegNames[rs1]}, #${imm}`;
+class BGE {
+    constructor(rs1, rs2, imm) {
+        this.rs1 = rs1;
+        this.rs2 = rs2;
+        this.imm = imm;
+    }
+    toString() {
+        if (this.rs1 == 0) {
+            return `bgez ${IntRegNames[this.rs2]}, #${this.imm}`;
+        } else if (this.rs2 == 0) {
+            return `bgez ${IntRegNames[this.rs1]}, #${this.imm}`;
         } else {
-            return `blt ${IntRegNames[rs1]},${IntRegNames[rs2]},#${imm}`;
+            return `bge ${IntRegNames[this.rs1]},${IntRegNames[this.rs2]},#${this.imm}`;
         }
     }
 }
 
-function BGE(rs1, rs2, imm) {
-    this.rs1 = rs1;
-    this.rs2 = rs2;
-    this.imm = imm;
-    this.toString = function() {
-        if (rs1 == 0) {
-            return `bgez ${IntRegNames[rs2]}, #${imm}`;
-        } else if (rs2 == 0) {
-            return `bgez ${IntRegNames[rs1]}, #${imm}`;
-        } else {
-            return `bge ${IntRegNames[rs1]},${IntRegNames[rs2]},#${imm}`;
-        }
+class BLTU {
+    constructor(rs1, rs2, imm) {
+        this.rs1 = rs1;
+        this.rs2 = rs2;
+        this.imm = imm;
+    }
+    toString() {
+        return `bltu ${IntRegNames[this.rs1]},${IntRegNames[this.rs2]},${this.imm}`;
     }
 }
 
-function BLTU(rs1, rs2, imm) {
-    this.rs1 = rs1;
-    this.rs2 = rs2;
-    this.imm = imm;
-    this.toString = function() {
-        return `bltu ${IntRegNames[rs1]},${IntRegNames[rs2]},${imm}`;
+class BGEU {
+    constructor(rs1, rs2, imm) {
+        this.rs1 = rs1;
+        this.rs2 = rs2;
+        this.imm = imm;
     }
-}
-
-function BGEU(rs1, rs2, imm) {
-    this.rs1 = rs1;
-    this.rs2 = rs2;
-    this.imm = imm;
-    this.toString = function() {
-        return `bgeu ${IntRegNames[rs1]},${IntRegNames[rs2]},${imm}`;
+    toString() {
+        return `bgeu ${IntRegNames[this.rs1]},${IntRegNames[this.rs2]},${this.imm}`;
     }
 }
 

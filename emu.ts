@@ -1,4 +1,4 @@
-const fs = require('fs')
+import * as fs from 'fs'
 
 //
 // Utility
@@ -277,7 +277,9 @@ class UNKNOWN_OP {
 }
 
 class LUI {
-    constructor(rd, imm) {
+    rd: number;
+    imm: number;
+    constructor(rd: number, imm: number) {
         this.rd = rd;
         this.imm = imm;
     }
@@ -287,7 +289,9 @@ class LUI {
 }
 
 class AUIPC {
-    constructor(rd, imm) {
+    rd: number;
+    imm: number;
+    constructor(rd: number, imm: number) {
         this.rd = rd;
         this.imm = imm;
     }
@@ -297,7 +301,9 @@ class AUIPC {
 }
 
 class JAL {
-    constructor(rd, imm) {
+    rd: number;
+    imm: number;
+    constructor(rd: number, imm: number) {
         this.rd = rd;
         this.imm = imm;        
     }
@@ -311,7 +317,10 @@ class JAL {
 }
 
 class JALR {
-    constructor(rd, rs1, imm) {
+    rd: number;
+    rs1: number;
+    imm: number;
+    constructor(rd: number, rs1: number, imm: number) {
         this.rd = rd;
         this.rs1 = rs1;
         this.imm = imm;
@@ -326,7 +335,10 @@ class JALR {
 }
 
 class BEQ {
-    constructor(rs1, rs2, imm) {
+    rs1: number;
+    rs2: number;
+    imm: number;
+    constructor(rs1: number, rs2: number, imm: number) {
         this.rs1 = rs1;
         this.rs2 = rs2;
         this.imm = imm;
@@ -343,7 +355,10 @@ class BEQ {
 }
 
 class BNE {
-    constructor(rs1, rs2, imm) {
+    rs1: number;
+    rs2: number;
+    imm: number;
+    constructor(rs1: number, rs2: number, imm: number) {
         this.rs1 = rs1;
         this.rs2 = rs2;
         this.imm = imm;
@@ -360,7 +375,10 @@ class BNE {
 }
 
 class BLT {
-    constructor(rs1, rs2, imm) {
+    rs1: number;
+    rs2: number;
+    imm: number;
+    constructor(rs1: number, rs2: number, imm: number) {
         this.rs1 = rs1;
         this.rs2 = rs2;
         this.imm = imm;
@@ -377,7 +395,10 @@ class BLT {
 }
 
 class BGE {
-    constructor(rs1, rs2, imm) {
+    rs1: number;
+    rs2: number;
+    imm: number;
+    constructor(rs1: number, rs2: number, imm: number) {
         this.rs1 = rs1;
         this.rs2 = rs2;
         this.imm = imm;
@@ -394,7 +415,10 @@ class BGE {
 }
 
 class BLTU {
-    constructor(rs1, rs2, imm) {
+    rs1: number;
+    rs2: number;
+    imm: number;
+    constructor(rs1: number, rs2: number, imm: number) {
         this.rs1 = rs1;
         this.rs2 = rs2;
         this.imm = imm;
@@ -405,7 +429,10 @@ class BLTU {
 }
 
 class BGEU {
-    constructor(rs1, rs2, imm) {
+    rs1: number;
+    rs2: number;
+    imm: number;
+    constructor(rs1: number, rs2: number, imm: number) {
         this.rs1 = rs1;
         this.rs2 = rs2;
         this.imm = imm;
@@ -416,7 +443,10 @@ class BGEU {
 }
 
 class LB {
-    constructor(rd, rs1, imm) {
+    rd: number;
+    rs1: number;
+    imm: number;
+    constructor(rd: number, rs1: number, imm: number) {
         this.rd = rd;
         this.rs1 = rs1;
         this.imm = imm;
@@ -427,7 +457,10 @@ class LB {
 }
 
 class LH {
-    constructor(rd, rs1, imm) {
+    rd: number;
+    rs1: number;
+    imm: number;
+    constructor(rd: number, rs1: number, imm: number) {
         this.rd = rd;
         this.rs1 = rs1;
         this.imm = imm;
@@ -438,7 +471,10 @@ class LH {
 }
 
 class LW {
-    constructor(rd, rs1, imm) {
+    rd: number;
+    rs1: number;
+    imm: number;
+    constructor(rd: number, rs1: number, imm: number) {
         this.rd = rd;
         this.rs1 = rs1;
         this.imm = imm;
@@ -449,7 +485,10 @@ class LW {
 }
 
 class LBU {
-    constructor(rd, rs1, imm) {
+    rd: number;
+    rs1: number;
+    imm: number;
+    constructor(rd: number, rs1: number, imm: number) {
         this.rd = rd;
         this.rs1 = rs1;
         this.imm = imm;
@@ -460,7 +499,10 @@ class LBU {
 }
 
 class LHU {
-    constructor(rd, rs1, imm) {
+    rd: number;
+    rs1: number;
+    imm: number;
+    constructor(rd: number, rs1: number, imm: number) {
         this.rd = rd;
         this.rs1 = rs1;
         this.imm = imm;
@@ -471,9 +513,12 @@ class LHU {
 }
 
 class SB {
-    constructor(rd, rs1, imm) {
-        this.rd = rd;
+    rs1: number;
+    rs2: number;
+    imm: number;
+    constructor(rs1: number, rs2: number, imm: number) {
         this.rs1 = rs1;
+        this.rs2 = rs2;
         this.imm = imm;
     }
     toString() {
@@ -482,9 +527,12 @@ class SB {
 }
 
 class SH {
-    constructor(rd, rs1, imm) {
-        this.rd = rd;
+    rs1: number;
+    rs2: number;
+    imm: number;
+    constructor(rs1: number, rs2: number, imm: number) {
         this.rs1 = rs1;
+        this.rs2 = rs2;
         this.imm = imm;
     }
     toString() {
@@ -493,9 +541,12 @@ class SH {
 }
 
 class SW {
-    constructor(rd, rs1, imm) {
-        this.rd = rd;
+    rs1: number;
+    rs2: number;
+    imm: number;
+    constructor(rs1: number, rs2: number, imm: number) {
         this.rs1 = rs1;
+        this.rs2 = rs2;
         this.imm = imm;
     }
     toString() {
@@ -504,7 +555,10 @@ class SW {
 }
 
 class ADDI {
-    constructor(rd, rs1, imm) {
+    rd: number;
+    rs1: number;
+    imm: number;
+    constructor(rd: number, rs1: number, imm: number) {
         this.rd = rd;
         this.rs1 = rs1;
         this.imm = imm;
@@ -515,7 +569,10 @@ class ADDI {
 }
 
 class SLTI {
-    constructor(rd, rs1, imm) {
+    rd: number;
+    rs1: number;
+    imm: number;
+    constructor(rd: number, rs1: number, imm: number) {
         this.rd = rd;
         this.rs1 = rs1;
         this.imm = imm;
@@ -526,7 +583,10 @@ class SLTI {
 }
 
 class SLTIU {
-    constructor(rd, rs1, imm) {
+    rd: number;
+    rs1: number;
+    imm: number;
+    constructor(rd: number, rs1: number, imm: number) {
         this.rd = rd;
         this.rs1 = rs1;
         this.imm = imm;
@@ -537,7 +597,10 @@ class SLTIU {
 }
 
 class XORI {
-    constructor(rd, rsls1, imm) {
+    rd: number;
+    rs1: number;
+    imm: number;
+    constructor(rd: number, rs1: number, imm: number) {
         this.rd = rd;
         this.rs1 = rs1;
         this.imm = imm;
@@ -548,7 +611,10 @@ class XORI {
 }
 
 class ORI {
-    constructor(rd, rs1, imm) {
+    rd: number;
+    rs1: number;
+    imm: number;
+    constructor(rd: number, rs1: number, imm: number) {
         this.rd = rd;
         this.rs1 = rs1;
         this.imm = imm;
@@ -559,7 +625,10 @@ class ORI {
 }
 
 class ANDI {
-    constructor(rd, rs1, imm) {
+    rd: number;
+    rs1: number;
+    imm: number;
+    constructor(rd: number, rs1: number, imm: number) {
         this.rd = rd;
         this.rs1 = rs1;
         this.imm = imm;
@@ -570,7 +639,10 @@ class ANDI {
 }
 
 class SLLI {
-    constructor(rd, rs1, shamt) {
+    rd: number;
+    rs1: number;
+    shamt: number;
+    constructor(rd: number, rs1: number, shamt: number) {
         this.rd = rd;
         this.rs1 = rs1;
         this.shamt = shamt;
@@ -581,7 +653,10 @@ class SLLI {
 }
 
 class SRLI {
-    constructor(rd, rs1, shamt) {
+    rd: number;
+    rs1: number;
+    shamt: number;
+    constructor(rd: number, rs1: number, shamt: number) {
         this.rd = rd;
         this.rs1 = rs1;
         this.shamt = shamt;
@@ -592,7 +667,10 @@ class SRLI {
 }
 
 class SRAI {
-    constructor(rd, rs1, shamt) {
+    rd: number;
+    rs1: number;
+    shamt: number;
+    constructor(rd: number, rs1: number, shamt: number) {
         this.rd = rd;
         this.rs1 = rs1;
         this.shamt = shamt;
@@ -603,7 +681,10 @@ class SRAI {
 }
 
 class ADD {
-    constructor(rd, rs1, rs2) {
+    rd: number;
+    rs1: number;
+    rs2: number;
+    constructor(rd: number, rs1: number, rs2: number) {
         this.rd = rd;
         this.rs1 = rs1;
         this.rs2 = rs2;
@@ -614,7 +695,10 @@ class ADD {
 }
 
 class SUB {
-    constructor(rd, rs1, rs2) {
+    rd: number;
+    rs1: number;
+    rs2: number;
+    constructor(rd: number, rs1: number, rs2: number) {
         this.rd = rd;
         this.rs1 = rs1;
         this.rs2 = rs2;
@@ -625,7 +709,10 @@ class SUB {
 }
 
 class SLL {
-    constructor(rd, rs1, rs2) {
+    rd: number;
+    rs1: number;
+    rs2: number;
+    constructor(rd: number, rs1: number, rs2: number) {
         this.rd = rd;
         this.rs1 = rs1;
         this.rs2 = rs2;
@@ -636,7 +723,10 @@ class SLL {
 }
 
 class SLT {
-    constructor(rd, rs1, rs2) {
+    rd: number;
+    rs1: number;
+    rs2: number;
+    constructor(rd: number, rs1: number, rs2: number) {
         this.rd = rd;
         this.rs1 = rs1;
         this.rs2 = rs2;
@@ -647,7 +737,10 @@ class SLT {
 }
 
 class SLTU {
-    constructor(rd, rs1, rs2) {
+    rd: number;
+    rs1: number;
+    rs2: number;
+    constructor(rd: number, rs1: number, rs2: number) {
         this.rd = rd;
         this.rs1 = rs1;
         this.rs2 = rs2;
@@ -658,7 +751,10 @@ class SLTU {
 }
 
 class XOR {
-    constructor(rd, rs1, rs2) {
+    rd: number;
+    rs1: number;
+    rs2: number;
+    constructor(rd: number, rs1: number, rs2: number) {
         this.rd = rd;
         this.rs1 = rs1;
         this.rs2 = rs2;
@@ -669,7 +765,10 @@ class XOR {
 }
 
 class SRL {
-    constructor(rd, rs1, rs2) {
+    rd: number;
+    rs1: number;
+    rs2: number;
+    constructor(rd: number, rs1: number, rs2: number) {
         this.rd = rd;
         this.rs1 = rs1;
         this.rs2 = rs2;
@@ -679,8 +778,25 @@ class SRL {
     }
 }
 
+class SRA {
+    rd: number;
+    rs1: number;
+    rs2: number;
+    constructor(rd: number, rs1: number, rs2: number) {
+        this.rd = rd;
+        this.rs1 = rs1;
+        this.rs2 = rs2;
+    }
+    toString() {
+        return `sra ${IntRegNames[this.rd]},${IntRegNames[this.rs1]},${IntRegNames[this.rs2]}`;
+    }
+}
+
 class OR {
-    constructor(rd, rs1, rs2) {
+    rd: number;
+    rs1: number;
+    rs2: number;
+    constructor(rd: number, rs1: number, rs2: number) {
         this.rd = rd;
         this.rs1 = rs1;
         this.rs2 = rs2;
@@ -691,7 +807,10 @@ class OR {
 }
 
 class AND {
-    constructor(rd, rs1, rs2) {
+    rd: number;
+    rs1: number;
+    rs2: number;
+    constructor(rd: number, rs1: number, rs2: number) {
         this.rd = rd;
         this.rs1 = rs1;
         this.rs2 = rs2;
@@ -702,7 +821,10 @@ class AND {
 }
 
 class FENCE {
-    constructor(fm, pred, succ) {
+    fm: number;
+    pred: number;
+    succ: number;
+    constructor(fm: number, pred: number, succ: number) {
         this.fm = fm;
         this.pred = pred;
         this.succ = succ;
@@ -713,7 +835,8 @@ class FENCE {
 }
 
 class FENCE_I {
-    constructor(imm) {
+    imm: number;
+    constructor(imm: number) {
         this.imm = imm;
     }
     toString() {
@@ -722,23 +845,22 @@ class FENCE_I {
 }
 
 class ECALL {
-    constructor() {
-    }
     toString() {
         return `ecall`;
     }
 }
 
 class EBREAK {
-    constructor() {
-    }
     toString() {
         return `ebreak`;
     }
 }
 
 class CSRRW {
-    constructor(csr, rd, rs1) {
+    csr: number;
+    rd: number;
+    rs1: number;
+    constructor(csr: number, rd: number, rs1: number) {
         this.csr = csr;
         this.rd = rd;
         this.rs1 = rs1;
@@ -753,7 +875,10 @@ class CSRRW {
 }
 
 class CSRRS {
-    constructor(csr, rd, rs1) {
+    csr: number;
+    rd: number;
+    rs1: number;
+    constructor(csr: number, rd: number, rs1: number) {
         this.csr = csr;
         this.rd = rd;
         this.rs1 = rs1;
@@ -770,7 +895,10 @@ class CSRRS {
 }
 
 class CSRRC {
-    constructor(csr, rd, rs1) {
+    csr: number;
+    rd: number;
+    rs1: number;
+    constructor(csr: number, rd: number, rs1: number) {
         this.csr = csr;
         this.rd = rd;
         this.rs1 = rs1;
@@ -787,7 +915,10 @@ class CSRRC {
 }
 
 class CSRRWI {
-    constructor(csr, rd, uimm) {
+    csr: number;
+    rd: number;
+    uimm: number;
+    constructor(csr: number, rd: number, uimm: number) {
         this.csr = csr;
         this.rd = rd;
         this.uimm = uimm;
@@ -802,7 +933,10 @@ class CSRRWI {
 }
 
 class CSRRSI {
-    constructor(csr, rd, uimm) {
+    csr: number;
+    rd: number;
+    uimm: number;
+    constructor(csr: number, rd: number, uimm: number) {
         this.csr = csr;
         this.rd = rd;
         this.uimm = uimm;
@@ -817,7 +951,10 @@ class CSRRSI {
 }
 
 class CSRRCI {
-    constructor(csr, rd, uimm) {
+    csr: number;
+    rd: number;
+    uimm: number;
+    constructor(csr: number, rd: number, uimm: number) {
         this.csr = csr;
         this.rd = rd;
         this.uimm = uimm;
@@ -832,56 +969,48 @@ class CSRRCI {
 }
 
 class URET {
-    constructor() {
-    }
     toString() {
         return `uret`;
     }
 }
 
 class SRET {
-    constructor() {
-    }
     toString() {
         return `sret`;
     }
 }
 
 class MRET {
-    constructor() {
-    }
     toString() {
         return `mret`;
     }
 }
 
 class WFI {
-    constructor() {
-    }
     toString() {
         return `wfi`;
     }
 }
 
 class SFENCE_VMA {
-    constructor() {
-    }
+    rs1: number;
+    rs2: number;
     toString() {
         return `sfence.vma ${IntRegNames[this.rs1]},${IntRegNames[this.rs2]}`;
     }
 }
 
 class HFENCE_BVMA {
-    constructor() {
-    }
+    rs1: number;
+    rs2: number;
     toString() {
         return `hfence.bvma ${IntRegNames[this.rs1]},${IntRegNames[this.rs2]}`;
     }
 }
 
 class HFENCE_GVMA {
-    constructor() {
-    }
+    rs1: number;
+    rs2: number;
     toString() {
         return `hfence.gvma ${IntRegNames[this.rs1]},${IntRegNames[this.rs2]}`;
     }

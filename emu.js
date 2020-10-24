@@ -342,6 +342,141 @@ class SRAI {
     }
 }
 
+class ADD {
+    constructor(rd, rs1, rs2) {
+        this.rd = rd;
+        this.rs1 = rs1;
+        this.rs2 = rs2;
+    }
+    toString() {
+        return `add ${IntRegNames[this.rd]},${IntRegNames[this.rs1]},${IntRegNames[this.rs2]}`;
+    }
+}
+
+class SUB {
+    constructor(rd, rs1, rs2) {
+        this.rd = rd;
+        this.rs1 = rs1;
+        this.rs2 = rs2;
+    }
+    toString() {
+        return `add ${IntRegNames[this.rd]},${IntRegNames[this.rs1]},${IntRegNames[this.rs2]}`;
+    }
+}
+
+class SLL {
+    constructor(rd, rs1, rs2) {
+        this.rd = rd;
+        this.rs1 = rs1;
+        this.rs2 = rs2;
+    }
+    toString() {
+        return `sll ${IntRegNames[this.rd]},${IntRegNames[this.rs1]},${IntRegNames[this.rs2]}`;
+    }
+}
+
+class SLT {
+    constructor(rd, rs1, rs2) {
+        this.rd = rd;
+        this.rs1 = rs1;
+        this.rs2 = rs2;
+    }
+    toString() {
+        return `slt ${IntRegNames[this.rd]},${IntRegNames[this.rs1]},${IntRegNames[this.rs2]}`;
+    }
+}
+
+class SLTU {
+    constructor(rd, rs1, rs2) {
+        this.rd = rd;
+        this.rs1 = rs1;
+        this.rs2 = rs2;
+    }
+    toString() {
+        return `sltu ${IntRegNames[this.rd]},${IntRegNames[this.rs1]},${IntRegNames[this.rs2]}`;
+    }
+}
+
+class XOR {
+    constructor(rd, rs1, rs2) {
+        this.rd = rd;
+        this.rs1 = rs1;
+        this.rs2 = rs2;
+    }
+    toString() {
+        return `xor ${IntRegNames[this.rd]},${IntRegNames[this.rs1]},${IntRegNames[this.rs2]}`;
+    }
+}
+
+class SRL {
+    constructor(rd, rs1, rs2) {
+        this.rd = rd;
+        this.rs1 = rs1;
+        this.rs2 = rs2;
+    }
+    toString() {
+        return `srl ${IntRegNames[this.rd]},${IntRegNames[this.rs1]},${IntRegNames[this.rs2]}`;
+    }
+}
+
+class OR {
+    constructor(rd, rs1, rs2) {
+        this.rd = rd;
+        this.rs1 = rs1;
+        this.rs2 = rs2;
+    }
+    toString() {
+        return `or ${IntRegNames[this.rd]},${IntRegNames[this.rs1]},${IntRegNames[this.rs2]}`;
+    }
+}
+
+class AND {
+    constructor(rd, rs1, rs2) {
+        this.rd = rd;
+        this.rs1 = rs1;
+        this.rs2 = rs2;
+    }
+    toString() {
+        return `and ${IntRegNames[this.rd]},${IntRegNames[this.rs1]},${IntRegNames[this.rs2]}`;
+    }
+}
+
+class FENCE {
+    constructor(fm, pred, succ) {
+        this.fm = fm;
+        this.pred = pred;
+        this.succ = succ;
+    }
+    toString() {
+        return `fence`;
+    }
+}
+
+class FENCE_I {
+    constructor(imm) {
+        this.imm = imm;
+    }
+    toString() {
+        return `fence.i`;
+    }
+}
+
+class ECALL {
+    constructor() {
+    }
+    toString() {
+        return `ecall`;
+    }
+}
+
+class EBREAK {
+    constructor() {
+    }
+    toString() {
+        return `ebreak`;
+    }
+}
+
 //
 // Decode
 //
@@ -371,6 +506,7 @@ function decode(insn) {
     const rs2 = (insn >> 20) & 0x1f;
     const shamt = (insn >> 20) & 0x1f;
     const funct7 = (insn >> 25) & 0x7f;
+    const funct12 = (insn >> 20) & 0xfff;
 
     const imm_jal = signExtend(21,
         pick(insn, 31) << 20 |
@@ -459,6 +595,44 @@ function decode(insn) {
             return new ORI(rd, rs1, signExtend(12, pick(insn, 20, 12)));
         } else if (funct3 == 0b111) {
             return new ANDI(rd, rs1, signExtend(12, pick(insn, 20, 12)));
+        } else {
+            return new UnknownOp();
+        }
+    case 0b0110011:
+        if (funct3 == 0b000 && funct7 == 0b0000000) {
+            return new ADD(rd, rs1, rs2);
+        } else if (funct3 == 0b000 && funct7 == 0b0100000) {
+            return new SUB(rd, rs1, rs2);
+        } else if (funct3 == 0b001 && funct7 == 0b0000000) {
+            return new SLL(rd, rs1, rs2);
+        } else if (funct3 == 0b010 && funct7 == 0b0000000) {
+            return new SLT(rd, rs1, rs2);
+        } else if (funct3 == 0b011 && funct7 == 0b0000000) {
+            return new SLTU(rd, rs1, rs2);
+        } else if (funct3 == 0b100 && funct7 == 0b0000000) {
+            return new XOR(rd, rs1, rs2);
+        } else if (funct3 == 0b101 && funct7 == 0b0000000) {
+            return new SRL(rd, rs1, rs2);
+        } else if (funct3 == 0b101 && funct7 == 0b0100000) {
+            return new SRA(rd, rs1, rs2);
+        } else if (funct3 == 0b110 && funct7 == 0b0000000) {
+            return new OR(rd, rs1, rs2);
+        } else if (funct3 == 0b111 && funct7 == 0b0000000) {
+            return new AND(rd, rs1, rs2);
+        } else {
+            return new UnknownOp();
+        }
+    case 0b0000011:
+        if (funct3 == 0b000) {
+            return new FENCE(pick(insn, 28, 4), pick(insn, 24, 4), pick(insn, 20, 4));
+        } else {
+            return new UnknownOp();
+        }
+    case 0b1110011:
+        if (funct12 == 0b0000_0000_0000 && rs1 == 0b000 && funct3 == 0b000 && rd == 0b00000) {
+            return new ECALL();
+        } else if (funct12 == 0b0000_0000_0001 && rs1 == 0b000 && funct3 == 0b000 && rd == 0b00000) {
+            return new EBREAK();
         } else {
             return new UnknownOp();
         }

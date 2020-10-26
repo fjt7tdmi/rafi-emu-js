@@ -271,8 +271,9 @@ function signExtend(width, value) {
 // Core
 //
 class Core {
-    pc: number
-    intRegs: number[]
+    public pc: number
+    public intRegs: number[]
+
     constructor() {
         this.pc = 0;
         this.intRegs = [
@@ -300,8 +301,8 @@ class UNKNOWN_OP implements OpInterface {
 }
 
 class LUI implements OpInterface {
-    rd: number;
-    imm: number;
+    private rd: number;
+    private imm: number;
     constructor(rd: number, imm: number) {
         this.rd = rd;
         this.imm = imm;
@@ -313,8 +314,9 @@ class LUI implements OpInterface {
 }
 
 class AUIPC implements OpInterface {
-    rd: number;
-    imm: number;
+    private rd: number;
+    private imm: number;
+
     constructor(rd: number, imm: number) {
         this.rd = rd;
         this.imm = imm;
@@ -326,8 +328,9 @@ class AUIPC implements OpInterface {
 }
 
 class JAL implements OpInterface {
-    rd: number;
-    imm: number;
+    private rd: number;
+    private imm: number;
+
     constructor(rd: number, imm: number) {
         this.rd = rd;
         this.imm = imm;        
@@ -343,9 +346,10 @@ class JAL implements OpInterface {
 }
 
 class JALR implements OpInterface {
-    rd: number;
-    rs1: number;
-    imm: number;
+    private rd: number;
+    private rs1: number;
+    private imm: number;
+
     constructor(rd: number, rs1: number, imm: number) {
         this.rd = rd;
         this.rs1 = rs1;
@@ -362,9 +366,10 @@ class JALR implements OpInterface {
 }
 
 class BEQ implements OpInterface {
-    rs1: number;
-    rs2: number;
-    imm: number;
+    private rs1: number;
+    private rs2: number;
+    private imm: number;
+
     constructor(rs1: number, rs2: number, imm: number) {
         this.rs1 = rs1;
         this.rs2 = rs2;
@@ -383,9 +388,10 @@ class BEQ implements OpInterface {
 }
 
 class BNE implements OpInterface {
-    rs1: number;
-    rs2: number;
-    imm: number;
+    private rs1: number;
+    private rs2: number;
+    private imm: number;
+
     constructor(rs1: number, rs2: number, imm: number) {
         this.rs1 = rs1;
         this.rs2 = rs2;
@@ -404,9 +410,10 @@ class BNE implements OpInterface {
 }
 
 class BLT implements OpInterface {
-    rs1: number;
-    rs2: number;
-    imm: number;
+    private rs1: number;
+    private rs2: number;
+    private imm: number;
+
     constructor(rs1: number, rs2: number, imm: number) {
         this.rs1 = rs1;
         this.rs2 = rs2;
@@ -425,9 +432,10 @@ class BLT implements OpInterface {
 }
 
 class BGE implements OpInterface {
-    rs1: number;
-    rs2: number;
-    imm: number;
+    private rs1: number;
+    private rs2: number;
+    private imm: number;
+
     constructor(rs1: number, rs2: number, imm: number) {
         this.rs1 = rs1;
         this.rs2 = rs2;
@@ -446,9 +454,10 @@ class BGE implements OpInterface {
 }
 
 class BLTU implements OpInterface {
-    rs1: number;
-    rs2: number;
-    imm: number;
+    private rs1: number;
+    private rs2: number;
+    private imm: number;
+
     constructor(rs1: number, rs2: number, imm: number) {
         this.rs1 = rs1;
         this.rs2 = rs2;
@@ -461,9 +470,10 @@ class BLTU implements OpInterface {
 }
 
 class BGEU implements OpInterface {
-    rs1: number;
-    rs2: number;
-    imm: number;
+    private rs1: number;
+    private rs2: number;
+    private imm: number;
+
     constructor(rs1: number, rs2: number, imm: number) {
         this.rs1 = rs1;
         this.rs2 = rs2;
@@ -476,9 +486,10 @@ class BGEU implements OpInterface {
 }
 
 class LB implements OpInterface {
-    rd: number;
-    rs1: number;
-    imm: number;
+    private rd: number;
+    private rs1: number;
+    private imm: number;
+
     constructor(rd: number, rs1: number, imm: number) {
         this.rd = rd;
         this.rs1 = rs1;
@@ -491,9 +502,10 @@ class LB implements OpInterface {
 }
 
 class LH implements OpInterface {
-    rd: number;
-    rs1: number;
-    imm: number;
+    private rd: number;
+    private rs1: number;
+    private imm: number;
+
     constructor(rd: number, rs1: number, imm: number) {
         this.rd = rd;
         this.rs1 = rs1;
@@ -506,9 +518,10 @@ class LH implements OpInterface {
 }
 
 class LW implements OpInterface {
-    rd: number;
-    rs1: number;
-    imm: number;
+    private rd: number;
+    private rs1: number;
+    private imm: number;
+
     constructor(rd: number, rs1: number, imm: number) {
         this.rd = rd;
         this.rs1 = rs1;
@@ -521,9 +534,10 @@ class LW implements OpInterface {
 }
 
 class LBU implements OpInterface {
-    rd: number;
-    rs1: number;
-    imm: number;
+    private rd: number;
+    private rs1: number;
+    private imm: number;
+
     constructor(rd: number, rs1: number, imm: number) {
         this.rd = rd;
         this.rs1 = rs1;
@@ -536,9 +550,10 @@ class LBU implements OpInterface {
 }
 
 class LHU implements OpInterface {
-    rd: number;
-    rs1: number;
-    imm: number;
+    private rd: number;
+    private rs1: number;
+    private imm: number;
+
     constructor(rd: number, rs1: number, imm: number) {
         this.rd = rd;
         this.rs1 = rs1;
@@ -551,9 +566,10 @@ class LHU implements OpInterface {
 }
 
 class SB implements OpInterface {
-    rs1: number;
-    rs2: number;
-    imm: number;
+    private rs1: number;
+    private rs2: number;
+    private imm: number;
+
     constructor(rs1: number, rs2: number, imm: number) {
         this.rs1 = rs1;
         this.rs2 = rs2;
@@ -566,9 +582,10 @@ class SB implements OpInterface {
 }
 
 class SH implements OpInterface {
-    rs1: number;
-    rs2: number;
-    imm: number;
+    private rs1: number;
+    private rs2: number;
+    private imm: number;
+
     constructor(rs1: number, rs2: number, imm: number) {
         this.rs1 = rs1;
         this.rs2 = rs2;
@@ -581,9 +598,10 @@ class SH implements OpInterface {
 }
 
 class SW implements OpInterface {
-    rs1: number;
-    rs2: number;
-    imm: number;
+    private rs1: number;
+    private rs2: number;
+    private imm: number;
+
     constructor(rs1: number, rs2: number, imm: number) {
         this.rs1 = rs1;
         this.rs2 = rs2;
@@ -596,9 +614,10 @@ class SW implements OpInterface {
 }
 
 class ADDI implements OpInterface {
-    rd: number;
-    rs1: number;
-    imm: number;
+    private rd: number;
+    private rs1: number;
+    private imm: number;
+
     constructor(rd: number, rs1: number, imm: number) {
         this.rd = rd;
         this.rs1 = rs1;
@@ -611,9 +630,10 @@ class ADDI implements OpInterface {
 }
 
 class SLTI implements OpInterface {
-    rd: number;
-    rs1: number;
-    imm: number;
+    private rd: number;
+    private rs1: number;
+    private imm: number;
+
     constructor(rd: number, rs1: number, imm: number) {
         this.rd = rd;
         this.rs1 = rs1;
@@ -626,9 +646,10 @@ class SLTI implements OpInterface {
 }
 
 class SLTIU implements OpInterface {
-    rd: number;
-    rs1: number;
-    imm: number;
+    private rd: number;
+    private rs1: number;
+    private imm: number;
+
     constructor(rd: number, rs1: number, imm: number) {
         this.rd = rd;
         this.rs1 = rs1;
@@ -641,9 +662,10 @@ class SLTIU implements OpInterface {
 }
 
 class XORI implements OpInterface {
-    rd: number;
-    rs1: number;
-    imm: number;
+    private rd: number;
+    private rs1: number;
+    private imm: number;
+
     constructor(rd: number, rs1: number, imm: number) {
         this.rd = rd;
         this.rs1 = rs1;
@@ -656,9 +678,10 @@ class XORI implements OpInterface {
 }
 
 class ORI implements OpInterface {
-    rd: number;
-    rs1: number;
-    imm: number;
+    private rd: number;
+    private rs1: number;
+    private imm: number;
+
     constructor(rd: number, rs1: number, imm: number) {
         this.rd = rd;
         this.rs1 = rs1;
@@ -671,9 +694,10 @@ class ORI implements OpInterface {
 }
 
 class ANDI implements OpInterface {
-    rd: number;
-    rs1: number;
-    imm: number;
+    private rd: number;
+    private rs1: number;
+    private imm: number;
+
     constructor(rd: number, rs1: number, imm: number) {
         this.rd = rd;
         this.rs1 = rs1;
@@ -686,9 +710,10 @@ class ANDI implements OpInterface {
 }
 
 class SLLI implements OpInterface {
-    rd: number;
-    rs1: number;
-    shamt: number;
+    private rd: number;
+    private rs1: number;
+    private shamt: number;
+    
     constructor(rd: number, rs1: number, shamt: number) {
         this.rd = rd;
         this.rs1 = rs1;
@@ -701,9 +726,10 @@ class SLLI implements OpInterface {
 }
 
 class SRLI implements OpInterface {
-    rd: number;
-    rs1: number;
-    shamt: number;
+    private rd: number;
+    private rs1: number;
+    private shamt: number;
+
     constructor(rd: number, rs1: number, shamt: number) {
         this.rd = rd;
         this.rs1 = rs1;
@@ -716,9 +742,10 @@ class SRLI implements OpInterface {
 }
 
 class SRAI implements OpInterface {
-    rd: number;
-    rs1: number;
-    shamt: number;
+    private rd: number;
+    private rs1: number;
+    private shamt: number;
+
     constructor(rd: number, rs1: number, shamt: number) {
         this.rd = rd;
         this.rs1 = rs1;
@@ -731,9 +758,10 @@ class SRAI implements OpInterface {
 }
 
 class ADD implements OpInterface {
-    rd: number;
-    rs1: number;
-    rs2: number;
+    private rd: number;
+    private rs1: number;
+    private rs2: number;
+
     constructor(rd: number, rs1: number, rs2: number) {
         this.rd = rd;
         this.rs1 = rs1;
@@ -746,9 +774,10 @@ class ADD implements OpInterface {
 }
 
 class SUB implements OpInterface {
-    rd: number;
-    rs1: number;
-    rs2: number;
+    private rd: number;
+    private rs1: number;
+    private rs2: number;
+
     constructor(rd: number, rs1: number, rs2: number) {
         this.rd = rd;
         this.rs1 = rs1;
@@ -761,9 +790,10 @@ class SUB implements OpInterface {
 }
 
 class SLL implements OpInterface {
-    rd: number;
-    rs1: number;
-    rs2: number;
+    private rd: number;
+    private rs1: number;
+    private rs2: number;
+
     constructor(rd: number, rs1: number, rs2: number) {
         this.rd = rd;
         this.rs1 = rs1;
@@ -776,9 +806,10 @@ class SLL implements OpInterface {
 }
 
 class SLT implements OpInterface {
-    rd: number;
-    rs1: number;
-    rs2: number;
+    private rd: number;
+    private rs1: number;
+    private rs2: number;
+
     constructor(rd: number, rs1: number, rs2: number) {
         this.rd = rd;
         this.rs1 = rs1;
@@ -791,9 +822,10 @@ class SLT implements OpInterface {
 }
 
 class SLTU {
-    rd: number;
-    rs1: number;
-    rs2: number;
+    private rd: number;
+    private rs1: number;
+    private rs2: number;
+
     constructor(rd: number, rs1: number, rs2: number) {
         this.rd = rd;
         this.rs1 = rs1;
@@ -806,9 +838,10 @@ class SLTU {
 }
 
 class XOR implements OpInterface {
-    rd: number;
-    rs1: number;
-    rs2: number;
+    private rd: number;
+    private rs1: number;
+    private rs2: number;
+
     constructor(rd: number, rs1: number, rs2: number) {
         this.rd = rd;
         this.rs1 = rs1;
@@ -821,9 +854,10 @@ class XOR implements OpInterface {
 }
 
 class SRL implements OpInterface {
-    rd: number;
-    rs1: number;
-    rs2: number;
+    private rd: number;
+    private rs1: number;
+    private rs2: number;
+
     constructor(rd: number, rs1: number, rs2: number) {
         this.rd = rd;
         this.rs1 = rs1;
@@ -836,9 +870,10 @@ class SRL implements OpInterface {
 }
 
 class SRA implements OpInterface {
-    rd: number;
-    rs1: number;
-    rs2: number;
+    private rd: number;
+    private rs1: number;
+    private rs2: number;
+
     constructor(rd: number, rs1: number, rs2: number) {
         this.rd = rd;
         this.rs1 = rs1;
@@ -851,9 +886,10 @@ class SRA implements OpInterface {
 }
 
 class OR implements OpInterface {
-    rd: number;
-    rs1: number;
-    rs2: number;
+    private rd: number;
+    private rs1: number;
+    private rs2: number;
+
     constructor(rd: number, rs1: number, rs2: number) {
         this.rd = rd;
         this.rs1 = rs1;
@@ -866,9 +902,10 @@ class OR implements OpInterface {
 }
 
 class AND implements OpInterface {
-    rd: number;
-    rs1: number;
-    rs2: number;
+    private rd: number;
+    private rs1: number;
+    private rs2: number;
+
     constructor(rd: number, rs1: number, rs2: number) {
         this.rd = rd;
         this.rs1 = rs1;
@@ -881,9 +918,10 @@ class AND implements OpInterface {
 }
 
 class FENCE implements OpInterface {
-    fm: number;
-    pred: number;
-    succ: number;
+    private fm: number;
+    private pred: number;
+    private succ: number;
+    
     constructor(fm: number, pred: number, succ: number) {
         this.fm = fm;
         this.pred = pred;
@@ -896,7 +934,8 @@ class FENCE implements OpInterface {
 }
 
 class FENCE_I implements OpInterface {
-    imm: number;
+    private imm: number;
+
     constructor(imm: number) {
         this.imm = imm;
     }
@@ -921,9 +960,10 @@ class EBREAK implements OpInterface {
 }
 
 class CSRRW implements OpInterface {
-    csr: number;
-    rd: number;
-    rs1: number;
+    private csr: number;
+    private rd: number;
+    private rs1: number;
+
     constructor(csr: number, rd: number, rs1: number) {
         this.csr = csr;
         this.rd = rd;
@@ -940,9 +980,10 @@ class CSRRW implements OpInterface {
 }
 
 class CSRRS implements OpInterface {
-    csr: number;
-    rd: number;
-    rs1: number;
+    private csr: number;
+    private rd: number;
+    private rs1: number;
+
     constructor(csr: number, rd: number, rs1: number) {
         this.csr = csr;
         this.rd = rd;
@@ -961,9 +1002,10 @@ class CSRRS implements OpInterface {
 }
 
 class CSRRC implements OpInterface {
-    csr: number;
-    rd: number;
-    rs1: number;
+    private csr: number;
+    private rd: number;
+    private rs1: number;
+
     constructor(csr: number, rd: number, rs1: number) {
         this.csr = csr;
         this.rd = rd;
@@ -982,9 +1024,10 @@ class CSRRC implements OpInterface {
 }
 
 class CSRRWI implements OpInterface {
-    csr: number;
-    rd: number;
-    uimm: number;
+    private csr: number;
+    private rd: number;
+    private uimm: number;
+
     constructor(csr: number, rd: number, uimm: number) {
         this.csr = csr;
         this.rd = rd;
@@ -1001,9 +1044,10 @@ class CSRRWI implements OpInterface {
 }
 
 class CSRRSI implements OpInterface {
-    csr: number;
-    rd: number;
-    uimm: number;
+    private csr: number;
+    private rd: number;
+    private uimm: number;
+
     constructor(csr: number, rd: number, uimm: number) {
         this.csr = csr;
         this.rd = rd;
@@ -1020,9 +1064,10 @@ class CSRRSI implements OpInterface {
 }
 
 class CSRRCI implements OpInterface {
-    csr: number;
-    rd: number;
-    uimm: number;
+    private csr: number;
+    private rd: number;
+    private uimm: number;
+
     constructor(csr: number, rd: number, uimm: number) {
         this.csr = csr;
         this.rd = rd;
@@ -1067,8 +1112,9 @@ class WFI implements OpInterface {
 }
 
 class SFENCE_VMA implements OpInterface {
-    rs1: number;
-    rs2: number;
+    private rs1: number;
+    private rs2: number;
+
     execute(core: Core){}
     toString() {
         return `sfence.vma ${IntRegNames[this.rs1]},${IntRegNames[this.rs2]}`;
@@ -1076,8 +1122,9 @@ class SFENCE_VMA implements OpInterface {
 }
 
 class HFENCE_BVMA implements OpInterface {
-    rs1: number;
-    rs2: number;
+    private rs1: number;
+    private rs2: number;
+
     execute(core: Core){}
     toString() {
         return `hfence.bvma ${IntRegNames[this.rs1]},${IntRegNames[this.rs2]}`;
@@ -1085,8 +1132,9 @@ class HFENCE_BVMA implements OpInterface {
 }
 
 class HFENCE_GVMA implements OpInterface {
-    rs1: number;
-    rs2: number;
+    private rs1: number;
+    private rs2: number;
+    
     execute(core: Core){}
     toString() {
         return `hfence.gvma ${IntRegNames[this.rs1]},${IntRegNames[this.rs2]}`;

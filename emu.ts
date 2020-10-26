@@ -268,45 +268,71 @@ function signExtend(width, value) {
 }
 
 //
-// Ops
+// Core
 //
-class UNKNOWN_OP {
+class Core {
+    pc: number
+    intRegs: number[]
+    constructor() {
+        this.pc = 0;
+        this.intRegs = [
+            0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0,
+        ];
+    }
+}
+
+//
+// Op
+//
+interface OpInterface {
+    execute(core: Core): void;
+    toString(): string;
+}
+
+class UNKNOWN_OP implements OpInterface {
+    execute(core: Core){}
     toString() {
         return "UNKNOWN_OP";
     }
 }
 
-class LUI {
+class LUI implements OpInterface {
     rd: number;
     imm: number;
     constructor(rd: number, imm: number) {
         this.rd = rd;
         this.imm = imm;
     }
+    execute(core: Core){}
     toString() {
         return `lui ${IntRegNames[this.rd]},${this.imm}`;
     }
 }
 
-class AUIPC {
+class AUIPC implements OpInterface {
     rd: number;
     imm: number;
     constructor(rd: number, imm: number) {
         this.rd = rd;
         this.imm = imm;
     }
+    execute(core: Core){}
     toString() {
         return `auipc ${IntRegNames[this.rd]},${this.imm}`;
     }
 }
 
-class JAL {
+class JAL implements OpInterface {
     rd: number;
     imm: number;
     constructor(rd: number, imm: number) {
         this.rd = rd;
         this.imm = imm;        
     }
+    execute(core: Core){}
     toString() {
         if (this.rd == 0) {
             return `j #${this.imm}`;
@@ -316,7 +342,7 @@ class JAL {
     }
 }
 
-class JALR {
+class JALR implements OpInterface {
     rd: number;
     rs1: number;
     imm: number;
@@ -325,6 +351,7 @@ class JALR {
         this.rs1 = rs1;
         this.imm = imm;
     }
+    execute(core: Core){}
     toString() {
         if (this.rd == 0) {
             return `jr ${IntRegNames[this.rs1]},${this.imm}`;
@@ -334,7 +361,7 @@ class JALR {
     };
 }
 
-class BEQ {
+class BEQ implements OpInterface {
     rs1: number;
     rs2: number;
     imm: number;
@@ -343,6 +370,7 @@ class BEQ {
         this.rs2 = rs2;
         this.imm = imm;
     }
+    execute(core: Core){}
     toString() {
         if (this.rs1 == 0) {
             return `beqz ${IntRegNames[this.rs2]}, #${this.imm}`;
@@ -354,7 +382,7 @@ class BEQ {
     }
 }
 
-class BNE {
+class BNE implements OpInterface {
     rs1: number;
     rs2: number;
     imm: number;
@@ -363,6 +391,7 @@ class BNE {
         this.rs2 = rs2;
         this.imm = imm;
     }
+    execute(core: Core){}
     toString() {
         if (this.rs1 == 0) {
             return `bnez ${IntRegNames[this.rs2]}, #${this.imm}`;
@@ -374,7 +403,7 @@ class BNE {
     }
 }
 
-class BLT {
+class BLT implements OpInterface {
     rs1: number;
     rs2: number;
     imm: number;
@@ -383,6 +412,7 @@ class BLT {
         this.rs2 = rs2;
         this.imm = imm;
     }
+    execute(core: Core){}
     toString() {
         if (this.rs1 == 0) {
             return `bltz ${IntRegNames[this.rs2]}, #${this.imm}`;
@@ -394,7 +424,7 @@ class BLT {
     }
 }
 
-class BGE {
+class BGE implements OpInterface {
     rs1: number;
     rs2: number;
     imm: number;
@@ -403,6 +433,7 @@ class BGE {
         this.rs2 = rs2;
         this.imm = imm;
     }
+    execute(core: Core){}
     toString() {
         if (this.rs1 == 0) {
             return `bgez ${IntRegNames[this.rs2]}, #${this.imm}`;
@@ -414,7 +445,7 @@ class BGE {
     }
 }
 
-class BLTU {
+class BLTU implements OpInterface {
     rs1: number;
     rs2: number;
     imm: number;
@@ -423,12 +454,13 @@ class BLTU {
         this.rs2 = rs2;
         this.imm = imm;
     }
+    execute(core: Core){}
     toString() {
         return `bltu ${IntRegNames[this.rs1]},${IntRegNames[this.rs2]},${this.imm}`;
     }
 }
 
-class BGEU {
+class BGEU implements OpInterface {
     rs1: number;
     rs2: number;
     imm: number;
@@ -437,12 +469,13 @@ class BGEU {
         this.rs2 = rs2;
         this.imm = imm;
     }
+    execute(core: Core){}
     toString() {
         return `bgeu ${IntRegNames[this.rs1]},${IntRegNames[this.rs2]},${this.imm}`;
     }
 }
 
-class LB {
+class LB implements OpInterface {
     rd: number;
     rs1: number;
     imm: number;
@@ -451,12 +484,13 @@ class LB {
         this.rs1 = rs1;
         this.imm = imm;
     }
+    execute(core: Core){}
     toString() {
         return `lb ${IntRegNames[this.rd]},${this.imm}(${IntRegNames[this.rs1]})`;
     }
 }
 
-class LH {
+class LH implements OpInterface {
     rd: number;
     rs1: number;
     imm: number;
@@ -465,12 +499,13 @@ class LH {
         this.rs1 = rs1;
         this.imm = imm;
     }
+    execute(core: Core){}
     toString() {
         return `lh ${IntRegNames[this.rd]},${this.imm}(${IntRegNames[this.rs1]})`;
     }
 }
 
-class LW {
+class LW implements OpInterface {
     rd: number;
     rs1: number;
     imm: number;
@@ -479,12 +514,13 @@ class LW {
         this.rs1 = rs1;
         this.imm = imm;
     }
+    execute(core: Core){}
     toString() {
         return `lw ${IntRegNames[this.rd]},${this.imm}(${IntRegNames[this.rs1]})`;
     }
 }
 
-class LBU {
+class LBU implements OpInterface {
     rd: number;
     rs1: number;
     imm: number;
@@ -493,12 +529,13 @@ class LBU {
         this.rs1 = rs1;
         this.imm = imm;
     }
+    execute(core: Core){}
     toString() {
         return `lbu ${IntRegNames[this.rd]},${this.imm}(${IntRegNames[this.rs1]})`;
     }
 }
 
-class LHU {
+class LHU implements OpInterface {
     rd: number;
     rs1: number;
     imm: number;
@@ -507,12 +544,13 @@ class LHU {
         this.rs1 = rs1;
         this.imm = imm;
     }
+    execute(core: Core){}
     toString() {
         return `lhu ${IntRegNames[this.rd]},${this.imm}(${IntRegNames[this.rs1]})`;
     }
 }
 
-class SB {
+class SB implements OpInterface {
     rs1: number;
     rs2: number;
     imm: number;
@@ -521,12 +559,13 @@ class SB {
         this.rs2 = rs2;
         this.imm = imm;
     }
+    execute(core: Core){}
     toString() {
         return `sb ${IntRegNames[this.rs2]},${this.imm}(${IntRegNames[this.rs1]})`;
     }
 }
 
-class SH {
+class SH implements OpInterface {
     rs1: number;
     rs2: number;
     imm: number;
@@ -535,12 +574,13 @@ class SH {
         this.rs2 = rs2;
         this.imm = imm;
     }
+    execute(core: Core){}
     toString() {
         return `sh ${IntRegNames[this.rs2]},${this.imm}(${IntRegNames[this.rs1]})`;
     }
 }
 
-class SW {
+class SW implements OpInterface {
     rs1: number;
     rs2: number;
     imm: number;
@@ -549,12 +589,13 @@ class SW {
         this.rs2 = rs2;
         this.imm = imm;
     }
+    execute(core: Core){}
     toString() {
         return `sw ${IntRegNames[this.rs2]},${this.imm}(${IntRegNames[this.rs1]})`;
     }
 }
 
-class ADDI {
+class ADDI implements OpInterface {
     rd: number;
     rs1: number;
     imm: number;
@@ -563,12 +604,13 @@ class ADDI {
         this.rs1 = rs1;
         this.imm = imm;
     }
+    execute(core: Core){}
     toString() {
         return `addi ${IntRegNames[this.rd]},${IntRegNames[this.rs1]},${this.imm}`;
     }
 }
 
-class SLTI {
+class SLTI implements OpInterface {
     rd: number;
     rs1: number;
     imm: number;
@@ -577,12 +619,13 @@ class SLTI {
         this.rs1 = rs1;
         this.imm = imm;
     }
+    execute(core: Core){}
     toString() {
         return `slti ${IntRegNames[this.rd]},${IntRegNames[this.rs1]},${this.imm}`;
     }
 }
 
-class SLTIU {
+class SLTIU implements OpInterface {
     rd: number;
     rs1: number;
     imm: number;
@@ -591,12 +634,13 @@ class SLTIU {
         this.rs1 = rs1;
         this.imm = imm;
     }
+    execute(core: Core){}
     toString() {
         return `sltiu ${IntRegNames[this.rd]},${IntRegNames[this.rs1]},${this.imm}`;
     }
 }
 
-class XORI {
+class XORI implements OpInterface {
     rd: number;
     rs1: number;
     imm: number;
@@ -605,12 +649,13 @@ class XORI {
         this.rs1 = rs1;
         this.imm = imm;
     }
+    execute(core: Core){}
     toString() {
         return `xori ${IntRegNames[this.rd]},${IntRegNames[this.rs1]},${this.imm}`;
     }
 }
 
-class ORI {
+class ORI implements OpInterface {
     rd: number;
     rs1: number;
     imm: number;
@@ -619,12 +664,13 @@ class ORI {
         this.rs1 = rs1;
         this.imm = imm;
     }
+    execute(core: Core){}
     toString() {
         return `ori ${IntRegNames[this.rd]},${IntRegNames[this.rs1]},${this.imm}`;
     }
 }
 
-class ANDI {
+class ANDI implements OpInterface {
     rd: number;
     rs1: number;
     imm: number;
@@ -633,12 +679,13 @@ class ANDI {
         this.rs1 = rs1;
         this.imm = imm;
     }
+    execute(core: Core){}
     toString() {
         return `andi ${IntRegNames[this.rd]},${IntRegNames[this.rs1]},${this.imm}`;
     }
 }
 
-class SLLI {
+class SLLI implements OpInterface {
     rd: number;
     rs1: number;
     shamt: number;
@@ -647,12 +694,13 @@ class SLLI {
         this.rs1 = rs1;
         this.shamt = shamt;
     }
+    execute(core: Core){}
     toString() {
         return `slli ${IntRegNames[this.rd]},${IntRegNames[this.rs1]},${this.shamt}`;
     }
 }
 
-class SRLI {
+class SRLI implements OpInterface {
     rd: number;
     rs1: number;
     shamt: number;
@@ -661,12 +709,13 @@ class SRLI {
         this.rs1 = rs1;
         this.shamt = shamt;
     }
+    execute(core: Core){}
     toString() {
         return `srli ${IntRegNames[this.rd]},${IntRegNames[this.rs1]},${this.shamt}`;
     }
 }
 
-class SRAI {
+class SRAI implements OpInterface {
     rd: number;
     rs1: number;
     shamt: number;
@@ -675,12 +724,13 @@ class SRAI {
         this.rs1 = rs1;
         this.shamt = shamt;
     }
+    execute(core: Core){}
     toString() {
         return `srai ${IntRegNames[this.rd]},${IntRegNames[this.rs1]},${this.shamt}`;
     }
 }
 
-class ADD {
+class ADD implements OpInterface {
     rd: number;
     rs1: number;
     rs2: number;
@@ -689,12 +739,13 @@ class ADD {
         this.rs1 = rs1;
         this.rs2 = rs2;
     }
+    execute(core: Core){}
     toString() {
         return `add ${IntRegNames[this.rd]},${IntRegNames[this.rs1]},${IntRegNames[this.rs2]}`;
     }
 }
 
-class SUB {
+class SUB implements OpInterface {
     rd: number;
     rs1: number;
     rs2: number;
@@ -703,12 +754,13 @@ class SUB {
         this.rs1 = rs1;
         this.rs2 = rs2;
     }
+    execute(core: Core){}
     toString() {
         return `add ${IntRegNames[this.rd]},${IntRegNames[this.rs1]},${IntRegNames[this.rs2]}`;
     }
 }
 
-class SLL {
+class SLL implements OpInterface {
     rd: number;
     rs1: number;
     rs2: number;
@@ -717,12 +769,13 @@ class SLL {
         this.rs1 = rs1;
         this.rs2 = rs2;
     }
+    execute(core: Core){}
     toString() {
         return `sll ${IntRegNames[this.rd]},${IntRegNames[this.rs1]},${IntRegNames[this.rs2]}`;
     }
 }
 
-class SLT {
+class SLT implements OpInterface {
     rd: number;
     rs1: number;
     rs2: number;
@@ -731,6 +784,7 @@ class SLT {
         this.rs1 = rs1;
         this.rs2 = rs2;
     }
+    execute(core: Core){}
     toString() {
         return `slt ${IntRegNames[this.rd]},${IntRegNames[this.rs1]},${IntRegNames[this.rs2]}`;
     }
@@ -745,12 +799,13 @@ class SLTU {
         this.rs1 = rs1;
         this.rs2 = rs2;
     }
+    execute(core: Core){}
     toString() {
         return `sltu ${IntRegNames[this.rd]},${IntRegNames[this.rs1]},${IntRegNames[this.rs2]}`;
     }
 }
 
-class XOR {
+class XOR implements OpInterface {
     rd: number;
     rs1: number;
     rs2: number;
@@ -759,12 +814,13 @@ class XOR {
         this.rs1 = rs1;
         this.rs2 = rs2;
     }
+    execute(core: Core){}
     toString() {
         return `xor ${IntRegNames[this.rd]},${IntRegNames[this.rs1]},${IntRegNames[this.rs2]}`;
     }
 }
 
-class SRL {
+class SRL implements OpInterface {
     rd: number;
     rs1: number;
     rs2: number;
@@ -773,12 +829,13 @@ class SRL {
         this.rs1 = rs1;
         this.rs2 = rs2;
     }
+    execute(core: Core){}
     toString() {
         return `srl ${IntRegNames[this.rd]},${IntRegNames[this.rs1]},${IntRegNames[this.rs2]}`;
     }
 }
 
-class SRA {
+class SRA implements OpInterface {
     rd: number;
     rs1: number;
     rs2: number;
@@ -787,12 +844,13 @@ class SRA {
         this.rs1 = rs1;
         this.rs2 = rs2;
     }
+    execute(core: Core){}
     toString() {
         return `sra ${IntRegNames[this.rd]},${IntRegNames[this.rs1]},${IntRegNames[this.rs2]}`;
     }
 }
 
-class OR {
+class OR implements OpInterface {
     rd: number;
     rs1: number;
     rs2: number;
@@ -801,12 +859,13 @@ class OR {
         this.rs1 = rs1;
         this.rs2 = rs2;
     }
+    execute(core: Core){}
     toString() {
         return `or ${IntRegNames[this.rd]},${IntRegNames[this.rs1]},${IntRegNames[this.rs2]}`;
     }
 }
 
-class AND {
+class AND implements OpInterface {
     rd: number;
     rs1: number;
     rs2: number;
@@ -815,12 +874,13 @@ class AND {
         this.rs1 = rs1;
         this.rs2 = rs2;
     }
+    execute(core: Core){}
     toString() {
         return `and ${IntRegNames[this.rd]},${IntRegNames[this.rs1]},${IntRegNames[this.rs2]}`;
     }
 }
 
-class FENCE {
+class FENCE implements OpInterface {
     fm: number;
     pred: number;
     succ: number;
@@ -829,34 +889,38 @@ class FENCE {
         this.pred = pred;
         this.succ = succ;
     }
+    execute(core: Core){}
     toString() {
         return `fence`;
     }
 }
 
-class FENCE_I {
+class FENCE_I implements OpInterface {
     imm: number;
     constructor(imm: number) {
         this.imm = imm;
     }
+    execute(core: Core){}
     toString() {
         return `fence.i`;
     }
 }
 
-class ECALL {
+class ECALL implements OpInterface {
+    execute(core: Core){}
     toString() {
         return `ecall`;
     }
 }
 
-class EBREAK {
+class EBREAK implements OpInterface {
+    execute(core: Core){}
     toString() {
         return `ebreak`;
     }
 }
 
-class CSRRW {
+class CSRRW implements OpInterface {
     csr: number;
     rd: number;
     rs1: number;
@@ -865,6 +929,7 @@ class CSRRW {
         this.rd = rd;
         this.rs1 = rs1;
     }
+    execute(core: Core){}
     toString() {
         if (this.rd == 0) {
             return `csrw ${getCsrName(this.csr)},${IntRegNames[this.rs1]}`;
@@ -874,7 +939,7 @@ class CSRRW {
     }
 }
 
-class CSRRS {
+class CSRRS implements OpInterface {
     csr: number;
     rd: number;
     rs1: number;
@@ -883,6 +948,7 @@ class CSRRS {
         this.rd = rd;
         this.rs1 = rs1;
     }
+    execute(core: Core){}
     toString() {
         if (this.rs1 == 0) {
             return `csrr ${IntRegNames[this.rd]},${getCsrName(this.csr)}`;
@@ -894,7 +960,7 @@ class CSRRS {
     }
 }
 
-class CSRRC {
+class CSRRC implements OpInterface {
     csr: number;
     rd: number;
     rs1: number;
@@ -903,6 +969,7 @@ class CSRRC {
         this.rd = rd;
         this.rs1 = rs1;
     }
+    execute(core: Core){}
     toString() {
         if (this.rs1 == 0) {
             return `csrc ${IntRegNames[this.rd]},${getCsrName(this.csr)}`;
@@ -914,7 +981,7 @@ class CSRRC {
     }
 }
 
-class CSRRWI {
+class CSRRWI implements OpInterface {
     csr: number;
     rd: number;
     uimm: number;
@@ -923,6 +990,7 @@ class CSRRWI {
         this.rd = rd;
         this.uimm = uimm;
     }
+    execute(core: Core){}
     toString() {
         if (this.rd == 0) {
             return `csrwi ${getCsrName(this.csr)},${this.uimm}`;
@@ -932,7 +1000,7 @@ class CSRRWI {
     }
 }
 
-class CSRRSI {
+class CSRRSI implements OpInterface {
     csr: number;
     rd: number;
     uimm: number;
@@ -941,6 +1009,7 @@ class CSRRSI {
         this.rd = rd;
         this.uimm = uimm;
     }
+    execute(core: Core){}
     toString() {
         if (this.rd == 0) {
             return `csrsi ${getCsrName(this.csr)},${this.uimm}`;
@@ -950,7 +1019,7 @@ class CSRRSI {
     }
 }
 
-class CSRRCI {
+class CSRRCI implements OpInterface {
     csr: number;
     rd: number;
     uimm: number;
@@ -959,6 +1028,7 @@ class CSRRCI {
         this.rd = rd;
         this.uimm = uimm;
     }
+    execute(core: Core){}
     toString() {
         if (this.rd == 0) {
             return `csrci ${getCsrName(this.csr)},${this.uimm}`;
@@ -968,49 +1038,56 @@ class CSRRCI {
     }
 }
 
-class URET {
+class URET implements OpInterface {
+    execute(core: Core){}
     toString() {
         return `uret`;
     }
 }
 
-class SRET {
+class SRET implements OpInterface {
+    execute(core: Core){}
     toString() {
         return `sret`;
     }
 }
 
-class MRET {
+class MRET implements OpInterface {
+    execute(core: Core){}
     toString() {
         return `mret`;
     }
 }
 
-class WFI {
+class WFI implements OpInterface {
+    execute(core: Core){}
     toString() {
         return `wfi`;
     }
 }
 
-class SFENCE_VMA {
+class SFENCE_VMA implements OpInterface {
     rs1: number;
     rs2: number;
+    execute(core: Core){}
     toString() {
         return `sfence.vma ${IntRegNames[this.rs1]},${IntRegNames[this.rs2]}`;
     }
 }
 
-class HFENCE_BVMA {
+class HFENCE_BVMA implements OpInterface {
     rs1: number;
     rs2: number;
+    execute(core: Core){}
     toString() {
         return `hfence.bvma ${IntRegNames[this.rs1]},${IntRegNames[this.rs2]}`;
     }
 }
 
-class HFENCE_GVMA {
+class HFENCE_GVMA implements OpInterface {
     rs1: number;
     rs2: number;
+    execute(core: Core){}
     toString() {
         return `hfence.gvma ${IntRegNames[this.rs1]},${IntRegNames[this.rs2]}`;
     }
@@ -1194,6 +1271,7 @@ function decode(insn) {
 // Emulator
 //
 let buffer = fs.readFileSync("rafi-prebuilt-binary/riscv-tests/isa/rv32ui-p-add.bin");
+let core = new Core();
 
 for (var offset = 0; offset < 0x400; offset += 4)
 {

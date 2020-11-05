@@ -272,6 +272,7 @@ function signExtend(width, value) {
 //
 class Core {
     public pc: number
+    public nextPc: number
     public intRegs: number[]
 
     constructor() {
@@ -307,7 +308,9 @@ class LUI implements OpInterface {
         this.rd = rd;
         this.imm = imm;
     }
-    execute(core: Core){}
+    execute(core: Core){
+        core.intRegs[this.rd] = this.imm;
+    }
     toString() {
         return `lui ${IntRegNames[this.rd]},${this.imm}`;
     }
@@ -321,7 +324,9 @@ class AUIPC implements OpInterface {
         this.rd = rd;
         this.imm = imm;
     }
-    execute(core: Core){}
+    execute(core: Core){
+        core.intRegs[this.rd] = core.pc + this.imm;
+    }
     toString() {
         return `auipc ${IntRegNames[this.rd]},${this.imm}`;
     }
@@ -335,7 +340,10 @@ class JAL implements OpInterface {
         this.rd = rd;
         this.imm = imm;        
     }
-    execute(core: Core){}
+    execute(core: Core){
+        core.nextPc = core.pc + this.imm;
+        core.intRegs[this.rd] = core.nextPc;
+    }
     toString() {
         if (this.rd == 0) {
             return `j #${this.imm}`;
@@ -355,7 +363,10 @@ class JALR implements OpInterface {
         this.rs1 = rs1;
         this.imm = imm;
     }
-    execute(core: Core){}
+    execute(core: Core){
+        core.nextPc = core.intRegs[this.rs1] + this.imm;
+        core.intRegs[this.rd] = core.nextPc;
+    }
     toString() {
         if (this.rd == 0) {
             return `jr ${IntRegNames[this.rs1]},${this.imm}`;
@@ -375,7 +386,15 @@ class BEQ implements OpInterface {
         this.rs2 = rs2;
         this.imm = imm;
     }
-    execute(core: Core){}
+    execute(core: Core){
+        const src1 = core.intRegs[this.rs1];
+        const src2 = core.intRegs[this.rs2];
+
+        if (src1 == src2)
+        {
+            core.nextPc = core.pc + this.imm;
+        }
+    }
     toString() {
         if (this.rs1 == 0) {
             return `beqz ${IntRegNames[this.rs2]}, #${this.imm}`;
@@ -397,7 +416,15 @@ class BNE implements OpInterface {
         this.rs2 = rs2;
         this.imm = imm;
     }
-    execute(core: Core){}
+    execute(core: Core){
+        const src1 = core.intRegs[this.rs1];
+        const src2 = core.intRegs[this.rs2];
+
+        if (src1 != src2)
+        {
+            core.nextPc = core.pc + this.imm;
+        }
+    }
     toString() {
         if (this.rs1 == 0) {
             return `bnez ${IntRegNames[this.rs2]}, #${this.imm}`;
@@ -419,7 +446,16 @@ class BLT implements OpInterface {
         this.rs2 = rs2;
         this.imm = imm;
     }
-    execute(core: Core){}
+    execute(core: Core){
+        const src1 = core.intRegs[this.rs1];
+        const src2 = core.intRegs[this.rs2];
+
+        // TODO: signed comparison
+        if (src1 < src2)
+        {
+            core.nextPc = core.pc + this.imm;
+        }
+    }
     toString() {
         if (this.rs1 == 0) {
             return `bltz ${IntRegNames[this.rs2]}, #${this.imm}`;
@@ -441,7 +477,16 @@ class BGE implements OpInterface {
         this.rs2 = rs2;
         this.imm = imm;
     }
-    execute(core: Core){}
+    execute(core: Core){
+        const src1 = core.intRegs[this.rs1];
+        const src2 = core.intRegs[this.rs2];
+
+        // TODO: signed comparison
+        if (src1 >= src2)
+        {
+            core.nextPc = core.pc + this.imm;
+        }
+    }
     toString() {
         if (this.rs1 == 0) {
             return `bgez ${IntRegNames[this.rs2]}, #${this.imm}`;
@@ -463,7 +508,16 @@ class BLTU implements OpInterface {
         this.rs2 = rs2;
         this.imm = imm;
     }
-    execute(core: Core){}
+    execute(core: Core){
+        const src1 = core.intRegs[this.rs1];
+        const src2 = core.intRegs[this.rs2];
+
+        // TODO: unsigned comparison
+        if (src1 < src2)
+        {
+            core.nextPc = core.pc + this.imm;
+        }
+    }
     toString() {
         return `bltu ${IntRegNames[this.rs1]},${IntRegNames[this.rs2]},${this.imm}`;
     }
@@ -479,7 +533,16 @@ class BGEU implements OpInterface {
         this.rs2 = rs2;
         this.imm = imm;
     }
-    execute(core: Core){}
+    execute(core: Core){
+        const src1 = core.intRegs[this.rs1];
+        const src2 = core.intRegs[this.rs2];
+
+        // TODO: unsigned comparison
+        if (src1 >= src2)
+        {
+            core.nextPc = core.pc + this.imm;
+        }
+    }
     toString() {
         return `bgeu ${IntRegNames[this.rs1]},${IntRegNames[this.rs2]},${this.imm}`;
     }

@@ -1,6 +1,6 @@
 import { Int, add, sub } from "./int";
 
-test('initial value', () => {
+test('basic', () => {
     const zero = new Int();
     expect(zero.toNumber()).toBe(0);
 

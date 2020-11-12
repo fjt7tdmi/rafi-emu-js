@@ -1,5 +1,5 @@
-import * as fs from 'fs'
-
+import * as fs from 'fs';
+import {Int, add, sub} from './int';
 //
 // Utility
 //
@@ -271,18 +271,11 @@ function signExtend(width, value) {
 // Core
 //
 class Core {
-    public pc: number
-    public nextPc: number
-    public intRegs: number[]
+    public pc: Int
+    public nextPc: Int
+    public intRegs: Int[]
 
     constructor() {
-        this.pc = 0;
-        this.intRegs = [
-            0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0,
-        ];
     }
 }
 
@@ -309,7 +302,7 @@ class LUI implements OpInterface {
         this.imm = imm;
     }
     execute(core: Core){
-        core.intRegs[this.rd] = this.imm;
+        core.intRegs[this.rd] = new Int(this.imm);
     }
     toString() {
         return `lui ${IntRegNames[this.rd]},${this.imm}`;
@@ -325,7 +318,7 @@ class AUIPC implements OpInterface {
         this.imm = imm;
     }
     execute(core: Core){
-        core.intRegs[this.rd] = core.pc + this.imm;
+        core.intRegs[this.rd] = add(core.pc, new Int(this.imm));
     }
     toString() {
         return `auipc ${IntRegNames[this.rd]},${this.imm}`;
@@ -341,7 +334,7 @@ class JAL implements OpInterface {
         this.imm = imm;        
     }
     execute(core: Core){
-        core.nextPc = core.pc + this.imm;
+        core.nextPc = add(core.pc, new Int(this.imm));
         core.intRegs[this.rd] = core.nextPc;
     }
     toString() {
@@ -364,7 +357,7 @@ class JALR implements OpInterface {
         this.imm = imm;
     }
     execute(core: Core){
-        core.nextPc = core.intRegs[this.rs1] + this.imm;
+        core.nextPc = add(core.intRegs[this.rs1], new Int(this.imm));
         core.intRegs[this.rd] = core.nextPc;
     }
     toString() {
@@ -392,7 +385,7 @@ class BEQ implements OpInterface {
 
         if (src1 == src2)
         {
-            core.nextPc = core.pc + this.imm;
+            core.nextPc = add(core.pc, new Int(this.imm));
         }
     }
     toString() {
@@ -422,7 +415,7 @@ class BNE implements OpInterface {
 
         if (src1 != src2)
         {
-            core.nextPc = core.pc + this.imm;
+            core.nextPc = add(core.pc, new Int(this.imm));
         }
     }
     toString() {
@@ -453,7 +446,7 @@ class BLT implements OpInterface {
         // TODO: signed comparison
         if (src1 < src2)
         {
-            core.nextPc = core.pc + this.imm;
+            core.nextPc = add(core.pc, new Int(this.imm));
         }
     }
     toString() {
@@ -484,7 +477,7 @@ class BGE implements OpInterface {
         // TODO: signed comparison
         if (src1 >= src2)
         {
-            core.nextPc = core.pc + this.imm;
+            core.nextPc = add(core.pc, new Int(this.imm));
         }
     }
     toString() {
@@ -515,7 +508,7 @@ class BLTU implements OpInterface {
         // TODO: unsigned comparison
         if (src1 < src2)
         {
-            core.nextPc = core.pc + this.imm;
+            core.nextPc = add(core.pc, new Int(this.imm));
         }
     }
     toString() {
@@ -540,7 +533,7 @@ class BGEU implements OpInterface {
         // TODO: unsigned comparison
         if (src1 >= src2)
         {
-            core.nextPc = core.pc + this.imm;
+            core.nextPc = add(core.pc, new Int(this.imm));
         }
     }
     toString() {

@@ -1,5 +1,5 @@
 import * as fs from 'fs';
-import {Int, add, sub} from './int';
+import * as int from './int';
 //
 // Utility
 //
@@ -271,9 +271,9 @@ function signExtend(width, value) {
 // Core
 //
 class Core {
-    public pc: Int
-    public nextPc: Int
-    public intRegs: Int[]
+    public pc: int.Integer
+    public nextPc: int.Integer
+    public intRegs: int.Integer[]
 
     constructor() {
     }
@@ -302,7 +302,7 @@ class LUI implements OpInterface {
         this.imm = imm;
     }
     execute(core: Core){
-        core.intRegs[this.rd] = new Int(this.imm);
+        core.intRegs[this.rd] = new int.Integer(this.imm);
     }
     toString() {
         return `lui ${IntRegNames[this.rd]},${this.imm}`;
@@ -318,7 +318,7 @@ class AUIPC implements OpInterface {
         this.imm = imm;
     }
     execute(core: Core){
-        core.intRegs[this.rd] = add(core.pc, new Int(this.imm));
+        core.intRegs[this.rd] = int.add(core.pc, new int.Integer(this.imm));
     }
     toString() {
         return `auipc ${IntRegNames[this.rd]},${this.imm}`;
@@ -334,7 +334,7 @@ class JAL implements OpInterface {
         this.imm = imm;        
     }
     execute(core: Core){
-        core.nextPc = add(core.pc, new Int(this.imm));
+        core.nextPc = int.add(core.pc, new int.Integer(this.imm));
         core.intRegs[this.rd] = core.nextPc;
     }
     toString() {
@@ -357,7 +357,7 @@ class JALR implements OpInterface {
         this.imm = imm;
     }
     execute(core: Core){
-        core.nextPc = add(core.intRegs[this.rs1], new Int(this.imm));
+        core.nextPc = int.add(core.intRegs[this.rs1], new int.Integer(this.imm));
         core.intRegs[this.rd] = core.nextPc;
     }
     toString() {
@@ -383,9 +383,8 @@ class BEQ implements OpInterface {
         const src1 = core.intRegs[this.rs1];
         const src2 = core.intRegs[this.rs2];
 
-        if (src1 == src2)
-        {
-            core.nextPc = add(core.pc, new Int(this.imm));
+        if (int.equal(src1, src2)) {
+            core.nextPc = int.add(core.pc, new int.Integer(this.imm));
         }
     }
     toString() {
@@ -413,9 +412,8 @@ class BNE implements OpInterface {
         const src1 = core.intRegs[this.rs1];
         const src2 = core.intRegs[this.rs2];
 
-        if (src1 != src2)
-        {
-            core.nextPc = add(core.pc, new Int(this.imm));
+        if (!int.equal(src1, src2)) {
+            core.nextPc = int.add(core.pc, new int.Integer(this.imm));
         }
     }
     toString() {
@@ -443,10 +441,8 @@ class BLT implements OpInterface {
         const src1 = core.intRegs[this.rs1];
         const src2 = core.intRegs[this.rs2];
 
-        // TODO: signed comparison
-        if (src1 < src2)
-        {
-            core.nextPc = add(core.pc, new Int(this.imm));
+        if (int.signedLessThan(src1, src2)) {
+            core.nextPc = int.add(core.pc, new int.Integer(this.imm));
         }
     }
     toString() {
@@ -474,10 +470,8 @@ class BGE implements OpInterface {
         const src1 = core.intRegs[this.rs1];
         const src2 = core.intRegs[this.rs2];
 
-        // TODO: signed comparison
-        if (src1 >= src2)
-        {
-            core.nextPc = add(core.pc, new Int(this.imm));
+        if (int.signedGreaterEqual(src1, src2)) {
+            core.nextPc = int.add(core.pc, new int.Integer(this.imm));
         }
     }
     toString() {
@@ -505,10 +499,8 @@ class BLTU implements OpInterface {
         const src1 = core.intRegs[this.rs1];
         const src2 = core.intRegs[this.rs2];
 
-        // TODO: unsigned comparison
-        if (src1 < src2)
-        {
-            core.nextPc = add(core.pc, new Int(this.imm));
+        if (int.unsignedLessThan(src1, src2)) {
+            core.nextPc = int.add(core.pc, new int.Integer(this.imm));
         }
     }
     toString() {
@@ -530,10 +522,8 @@ class BGEU implements OpInterface {
         const src1 = core.intRegs[this.rs1];
         const src2 = core.intRegs[this.rs2];
 
-        // TODO: unsigned comparison
-        if (src1 >= src2)
-        {
-            core.nextPc = add(core.pc, new Int(this.imm));
+        if (int.unsignedGreaterEqual(src1, src2)) {
+            core.nextPc = int.add(core.pc, new int.Integer(this.imm));
         }
     }
     toString() {

@@ -39,6 +39,10 @@ export function and(x: Integer, y: Integer) {
     return new Integer(x.toNumber() & y.toNumber());
 }
 
+export function not(x: Integer) {
+    return new Integer(~x.toNumber());
+}
+
 export function leftShift(x: Integer, y: Integer) {
     return new Integer(x.toNumber() << y.toNumber());
 }

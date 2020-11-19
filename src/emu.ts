@@ -274,8 +274,11 @@ class Core {
     public pc: int.Integer
     public nextPc: int.Integer
     public intRegs: int.Integer[]
+    public csr: int.Integer[]
 
     constructor() {
+        this.intRegs = new Array(32);
+        this.csr = new Array(0x1000);
     }
 }
 
@@ -1131,7 +1134,11 @@ class CSRRW implements OpInterface {
         this.rs1 = rs1;
     }
     execute(core: Core){
-        throw new Error("Not implemented.");
+        const srcCsr = core.csr[this.csr];
+        const src1 = core.intRegs[this.rs1];
+
+        core.csr[this.csr] = src1;
+        core.intRegs[this.rd] = srcCsr;
     }
     toString() {
         if (this.rd == 0) {
@@ -1153,7 +1160,11 @@ class CSRRS implements OpInterface {
         this.rs1 = rs1;
     }
     execute(core: Core){
-        throw new Error("Not implemented.");
+        const srcCsr = core.csr[this.csr];
+        const src1 = core.intRegs[this.rs1];
+
+        core.csr[this.csr] = int.or(srcCsr, src1);
+        core.intRegs[this.rd] = srcCsr;
     }
     toString() {
         if (this.rs1 == 0) {
@@ -1177,7 +1188,11 @@ class CSRRC implements OpInterface {
         this.rs1 = rs1;
     }
     execute(core: Core){
-        throw new Error("Not implemented.");
+        const srcCsr = core.csr[this.csr];
+        const src1 = core.intRegs[this.rs1];
+
+        core.csr[this.csr] = int.and(int.not(srcCsr), src1);
+        core.intRegs[this.rd] = srcCsr;
     }
     toString() {
         if (this.rs1 == 0) {
@@ -1201,7 +1216,11 @@ class CSRRWI implements OpInterface {
         this.uimm = uimm;
     }
     execute(core: Core){
-        throw new Error("Not implemented.");
+        const srcCsr = core.csr[this.csr];
+        const uimm = new int.Integer(this.uimm);
+
+        core.csr[this.csr] = uimm;
+        core.intRegs[this.rd] = srcCsr;
     }
     toString() {
         if (this.rd == 0) {
@@ -1223,7 +1242,11 @@ class CSRRSI implements OpInterface {
         this.uimm = uimm;
     }
     execute(core: Core){
-        throw new Error("Not implemented.");
+        const srcCsr = core.csr[this.csr];
+        const uimm = new int.Integer(this.uimm);
+
+        core.csr[this.csr] = int.or(srcCsr, uimm);
+        core.intRegs[this.rd] = srcCsr;
     }
     toString() {
         if (this.rd == 0) {
@@ -1245,7 +1268,11 @@ class CSRRCI implements OpInterface {
         this.uimm = uimm;
     }
     execute(core: Core){
-        throw new Error("Not implemented.");
+        const srcCsr = core.csr[this.csr];
+        const uimm = new int.Integer(this.uimm);
+
+        core.csr[this.csr] = int.and(int.not(srcCsr), uimm);
+        core.intRegs[this.rd] = srcCsr;
     }
     toString() {
         if (this.rd == 0) {

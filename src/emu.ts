@@ -541,7 +541,9 @@ class LB implements OpInterface {
         this.rs1 = rs1;
         this.imm = imm;
     }
-    execute(core: Core){}
+    execute(core: Core){
+        throw new Error("Not implemented.");
+    }
     toString() {
         return `lb ${IntRegNames[this.rd]},${this.imm}(${IntRegNames[this.rs1]})`;
     }
@@ -557,7 +559,9 @@ class LH implements OpInterface {
         this.rs1 = rs1;
         this.imm = imm;
     }
-    execute(core: Core){}
+    execute(core: Core){
+        throw new Error("Not implemented.");
+    }
     toString() {
         return `lh ${IntRegNames[this.rd]},${this.imm}(${IntRegNames[this.rs1]})`;
     }
@@ -573,7 +577,9 @@ class LW implements OpInterface {
         this.rs1 = rs1;
         this.imm = imm;
     }
-    execute(core: Core){}
+    execute(core: Core){
+        throw new Error("Not implemented.");
+    }
     toString() {
         return `lw ${IntRegNames[this.rd]},${this.imm}(${IntRegNames[this.rs1]})`;
     }
@@ -589,7 +595,9 @@ class LBU implements OpInterface {
         this.rs1 = rs1;
         this.imm = imm;
     }
-    execute(core: Core){}
+    execute(core: Core){
+        throw new Error("Not implemented.");
+    }
     toString() {
         return `lbu ${IntRegNames[this.rd]},${this.imm}(${IntRegNames[this.rs1]})`;
     }
@@ -605,7 +613,9 @@ class LHU implements OpInterface {
         this.rs1 = rs1;
         this.imm = imm;
     }
-    execute(core: Core){}
+    execute(core: Core){
+        throw new Error("Not implemented.");
+    }
     toString() {
         return `lhu ${IntRegNames[this.rd]},${this.imm}(${IntRegNames[this.rs1]})`;
     }
@@ -621,7 +631,9 @@ class SB implements OpInterface {
         this.rs2 = rs2;
         this.imm = imm;
     }
-    execute(core: Core){}
+    execute(core: Core){
+        throw new Error("Not implemented.");
+    }
     toString() {
         return `sb ${IntRegNames[this.rs2]},${this.imm}(${IntRegNames[this.rs1]})`;
     }
@@ -637,7 +649,9 @@ class SH implements OpInterface {
         this.rs2 = rs2;
         this.imm = imm;
     }
-    execute(core: Core){}
+    execute(core: Core){
+        throw new Error("Not implemented.");
+    }
     toString() {
         return `sh ${IntRegNames[this.rs2]},${this.imm}(${IntRegNames[this.rs1]})`;
     }
@@ -653,7 +667,9 @@ class SW implements OpInterface {
         this.rs2 = rs2;
         this.imm = imm;
     }
-    execute(core: Core){}
+    execute(core: Core){
+        throw new Error("Not implemented.");
+    }
     toString() {
         return `sw ${IntRegNames[this.rs2]},${this.imm}(${IntRegNames[this.rs1]})`;
     }
@@ -669,7 +685,9 @@ class ADDI implements OpInterface {
         this.rs1 = rs1;
         this.imm = imm;
     }
-    execute(core: Core){}
+    execute(core: Core){
+        core.intRegs[this.rd] = int.add(core.intRegs[this.rs1], new int.Integer(this.imm));
+    }
     toString() {
         return `addi ${IntRegNames[this.rd]},${IntRegNames[this.rs1]},${this.imm}`;
     }
@@ -685,7 +703,14 @@ class SLTI implements OpInterface {
         this.rs1 = rs1;
         this.imm = imm;
     }
-    execute(core: Core){}
+    execute(core: Core){
+        const src1 = core.intRegs[this.rs1];
+        const imm = new int.Integer(this.imm);
+
+        core.intRegs[this.rd] = int.signedLessThan(src1, imm)
+            ? new int.Integer(1)
+            : new int.Integer(0);        
+    }
     toString() {
         return `slti ${IntRegNames[this.rd]},${IntRegNames[this.rs1]},${this.imm}`;
     }
@@ -701,7 +726,14 @@ class SLTIU implements OpInterface {
         this.rs1 = rs1;
         this.imm = imm;
     }
-    execute(core: Core){}
+    execute(core: Core){
+        const src1 = core.intRegs[this.rs1];
+        const imm = new int.Integer(this.imm);
+
+        core.intRegs[this.rd] = int.unsignedLessThan(src1, imm)
+            ? new int.Integer(1)
+            : new int.Integer(0);        
+    }
     toString() {
         return `sltiu ${IntRegNames[this.rd]},${IntRegNames[this.rs1]},${this.imm}`;
     }
@@ -717,7 +749,12 @@ class XORI implements OpInterface {
         this.rs1 = rs1;
         this.imm = imm;
     }
-    execute(core: Core){}
+    execute(core: Core){
+        const src1 = core.intRegs[this.rs1];
+        const imm = new int.Integer(this.imm);
+
+        core.intRegs[this.rd] = int.xor(src1, imm);
+    }
     toString() {
         return `xori ${IntRegNames[this.rd]},${IntRegNames[this.rs1]},${this.imm}`;
     }
@@ -733,7 +770,12 @@ class ORI implements OpInterface {
         this.rs1 = rs1;
         this.imm = imm;
     }
-    execute(core: Core){}
+    execute(core: Core){
+        const src1 = core.intRegs[this.rs1];
+        const imm = new int.Integer(this.imm);
+
+        core.intRegs[this.rd] = int.or(src1, imm);
+    }
     toString() {
         return `ori ${IntRegNames[this.rd]},${IntRegNames[this.rs1]},${this.imm}`;
     }
@@ -749,7 +791,12 @@ class ANDI implements OpInterface {
         this.rs1 = rs1;
         this.imm = imm;
     }
-    execute(core: Core){}
+    execute(core: Core){
+        const src1 = core.intRegs[this.rs1];
+        const imm = new int.Integer(this.imm);
+
+        core.intRegs[this.rd] = int.and(src1, imm);
+    }
     toString() {
         return `andi ${IntRegNames[this.rd]},${IntRegNames[this.rs1]},${this.imm}`;
     }
@@ -781,7 +828,12 @@ class SRLI implements OpInterface {
         this.rs1 = rs1;
         this.shamt = shamt;
     }
-    execute(core: Core){}
+    execute(core: Core){
+        const src1 = core.intRegs[this.rs1];
+        const shamt = new int.Integer(this.shamt);
+
+        core.intRegs[this.rd] = int.unsignedRightShift(src1, shamt);
+    }
     toString() {
         return `srli ${IntRegNames[this.rd]},${IntRegNames[this.rs1]},${this.shamt}`;
     }
@@ -797,7 +849,12 @@ class SRAI implements OpInterface {
         this.rs1 = rs1;
         this.shamt = shamt;
     }
-    execute(core: Core){}
+    execute(core: Core){
+        const src1 = core.intRegs[this.rs1];
+        const shamt = new int.Integer(this.shamt);
+
+        core.intRegs[this.rd] = int.signedRightShift(src1, shamt);
+    }
     toString() {
         return `srai ${IntRegNames[this.rd]},${IntRegNames[this.rs1]},${this.shamt}`;
     }
@@ -813,7 +870,12 @@ class ADD implements OpInterface {
         this.rs1 = rs1;
         this.rs2 = rs2;
     }
-    execute(core: Core){}
+    execute(core: Core){
+        const src1 = core.intRegs[this.rs1];
+        const src2 = core.intRegs[this.rs2];
+
+        core.intRegs[this.rd] = int.and(src1, src2);
+    }
     toString() {
         return `add ${IntRegNames[this.rd]},${IntRegNames[this.rs1]},${IntRegNames[this.rs2]}`;
     }
@@ -829,7 +891,12 @@ class SUB implements OpInterface {
         this.rs1 = rs1;
         this.rs2 = rs2;
     }
-    execute(core: Core){}
+    execute(core: Core){
+        const src1 = core.intRegs[this.rs1];
+        const src2 = core.intRegs[this.rs2];
+
+        core.intRegs[this.rd] = int.sub(src1, src2);
+    }
     toString() {
         return `add ${IntRegNames[this.rd]},${IntRegNames[this.rs1]},${IntRegNames[this.rs2]}`;
     }
@@ -845,7 +912,12 @@ class SLL implements OpInterface {
         this.rs1 = rs1;
         this.rs2 = rs2;
     }
-    execute(core: Core){}
+    execute(core: Core){
+        const src1 = core.intRegs[this.rs1];
+        const src2 = core.intRegs[this.rs2];
+
+        core.intRegs[this.rd] = int.leftShift(src1, src2);
+    }
     toString() {
         return `sll ${IntRegNames[this.rd]},${IntRegNames[this.rs1]},${IntRegNames[this.rs2]}`;
     }
@@ -861,7 +933,14 @@ class SLT implements OpInterface {
         this.rs1 = rs1;
         this.rs2 = rs2;
     }
-    execute(core: Core){}
+    execute(core: Core){
+        const src1 = core.intRegs[this.rs1];
+        const src2 = core.intRegs[this.rs2];
+
+        core.intRegs[this.rd] = int.unsignedLessThan(src1, src2)
+            ? new int.Integer(1)
+            : new int.Integer(0);
+    }
     toString() {
         return `slt ${IntRegNames[this.rd]},${IntRegNames[this.rs1]},${IntRegNames[this.rs2]}`;
     }
@@ -877,7 +956,14 @@ class SLTU {
         this.rs1 = rs1;
         this.rs2 = rs2;
     }
-    execute(core: Core){}
+    execute(core: Core){
+        const src1 = core.intRegs[this.rs1];
+        const src2 = core.intRegs[this.rs2];
+
+        core.intRegs[this.rd] = int.signedLessThan(src1, src2)
+            ? new int.Integer(1)
+            : new int.Integer(0);
+    }
     toString() {
         return `sltu ${IntRegNames[this.rd]},${IntRegNames[this.rs1]},${IntRegNames[this.rs2]}`;
     }
@@ -893,7 +979,12 @@ class XOR implements OpInterface {
         this.rs1 = rs1;
         this.rs2 = rs2;
     }
-    execute(core: Core){}
+    execute(core: Core){
+        const src1 = core.intRegs[this.rs1];
+        const src2 = core.intRegs[this.rs2];
+
+        core.intRegs[this.rd] = int.xor(src1, src2);
+    }
     toString() {
         return `xor ${IntRegNames[this.rd]},${IntRegNames[this.rs1]},${IntRegNames[this.rs2]}`;
     }
@@ -909,7 +1000,12 @@ class SRL implements OpInterface {
         this.rs1 = rs1;
         this.rs2 = rs2;
     }
-    execute(core: Core){}
+    execute(core: Core){
+        const src1 = core.intRegs[this.rs1];
+        const src2 = core.intRegs[this.rs2];
+
+        core.intRegs[this.rd] = int.unsignedRightShift(src1, src2);
+    }
     toString() {
         return `srl ${IntRegNames[this.rd]},${IntRegNames[this.rs1]},${IntRegNames[this.rs2]}`;
     }
@@ -925,7 +1021,12 @@ class SRA implements OpInterface {
         this.rs1 = rs1;
         this.rs2 = rs2;
     }
-    execute(core: Core){}
+    execute(core: Core){
+        const src1 = core.intRegs[this.rs1];
+        const src2 = core.intRegs[this.rs2];
+
+        core.intRegs[this.rd] = int.signedRightShift(src1, src2);
+    }
     toString() {
         return `sra ${IntRegNames[this.rd]},${IntRegNames[this.rs1]},${IntRegNames[this.rs2]}`;
     }
@@ -941,7 +1042,12 @@ class OR implements OpInterface {
         this.rs1 = rs1;
         this.rs2 = rs2;
     }
-    execute(core: Core){}
+    execute(core: Core){
+        const src1 = core.intRegs[this.rs1];
+        const src2 = core.intRegs[this.rs2];
+
+        core.intRegs[this.rd] = int.or(src1, src2);
+    }
     toString() {
         return `or ${IntRegNames[this.rd]},${IntRegNames[this.rs1]},${IntRegNames[this.rs2]}`;
     }
@@ -957,7 +1063,12 @@ class AND implements OpInterface {
         this.rs1 = rs1;
         this.rs2 = rs2;
     }
-    execute(core: Core){}
+    execute(core: Core){
+        const src1 = core.intRegs[this.rs1];
+        const src2 = core.intRegs[this.rs2];
+
+        core.intRegs[this.rd] = int.and(src1, src2);
+    }
     toString() {
         return `and ${IntRegNames[this.rd]},${IntRegNames[this.rs1]},${IntRegNames[this.rs2]}`;
     }
@@ -992,14 +1103,18 @@ class FENCE_I implements OpInterface {
 }
 
 class ECALL implements OpInterface {
-    execute(core: Core){}
+    execute(core: Core){
+        throw new Error("Not implemented.");
+    }
     toString() {
         return `ecall`;
     }
 }
 
 class EBREAK implements OpInterface {
-    execute(core: Core){}
+    execute(core: Core){
+        throw new Error("Not implemented.");
+    }
     toString() {
         return `ebreak`;
     }
@@ -1015,7 +1130,9 @@ class CSRRW implements OpInterface {
         this.rd = rd;
         this.rs1 = rs1;
     }
-    execute(core: Core){}
+    execute(core: Core){
+        throw new Error("Not implemented.");
+    }
     toString() {
         if (this.rd == 0) {
             return `csrw ${getCsrName(this.csr)},${IntRegNames[this.rs1]}`;
@@ -1035,7 +1152,9 @@ class CSRRS implements OpInterface {
         this.rd = rd;
         this.rs1 = rs1;
     }
-    execute(core: Core){}
+    execute(core: Core){
+        throw new Error("Not implemented.");
+    }
     toString() {
         if (this.rs1 == 0) {
             return `csrr ${IntRegNames[this.rd]},${getCsrName(this.csr)}`;
@@ -1057,7 +1176,9 @@ class CSRRC implements OpInterface {
         this.rd = rd;
         this.rs1 = rs1;
     }
-    execute(core: Core){}
+    execute(core: Core){
+        throw new Error("Not implemented.");
+    }
     toString() {
         if (this.rs1 == 0) {
             return `csrc ${IntRegNames[this.rd]},${getCsrName(this.csr)}`;
@@ -1079,7 +1200,9 @@ class CSRRWI implements OpInterface {
         this.rd = rd;
         this.uimm = uimm;
     }
-    execute(core: Core){}
+    execute(core: Core){
+        throw new Error("Not implemented.");
+    }
     toString() {
         if (this.rd == 0) {
             return `csrwi ${getCsrName(this.csr)},${this.uimm}`;
@@ -1099,7 +1222,9 @@ class CSRRSI implements OpInterface {
         this.rd = rd;
         this.uimm = uimm;
     }
-    execute(core: Core){}
+    execute(core: Core){
+        throw new Error("Not implemented.");
+    }
     toString() {
         if (this.rd == 0) {
             return `csrsi ${getCsrName(this.csr)},${this.uimm}`;
@@ -1119,7 +1244,9 @@ class CSRRCI implements OpInterface {
         this.rd = rd;
         this.uimm = uimm;
     }
-    execute(core: Core){}
+    execute(core: Core){
+        throw new Error("Not implemented.");
+    }
     toString() {
         if (this.rd == 0) {
             return `csrci ${getCsrName(this.csr)},${this.uimm}`;
@@ -1130,28 +1257,36 @@ class CSRRCI implements OpInterface {
 }
 
 class URET implements OpInterface {
-    execute(core: Core){}
+    execute(core: Core){
+        throw new Error("Not implemented.");
+    }
     toString() {
         return `uret`;
     }
 }
 
 class SRET implements OpInterface {
-    execute(core: Core){}
+    execute(core: Core){
+        throw new Error("Not implemented.");
+    }
     toString() {
         return `sret`;
     }
 }
 
 class MRET implements OpInterface {
-    execute(core: Core){}
+    execute(core: Core){
+        throw new Error("Not implemented.");
+    }
     toString() {
         return `mret`;
     }
 }
 
 class WFI implements OpInterface {
-    execute(core: Core){}
+    execute(core: Core){
+        throw new Error("Not implemented.");
+    }
     toString() {
         return `wfi`;
     }
@@ -1161,7 +1296,9 @@ class SFENCE_VMA implements OpInterface {
     private rs1: number;
     private rs2: number;
 
-    execute(core: Core){}
+    execute(core: Core){
+        throw new Error("Not implemented.");
+    }
     toString() {
         return `sfence.vma ${IntRegNames[this.rs1]},${IntRegNames[this.rs2]}`;
     }
@@ -1171,7 +1308,9 @@ class HFENCE_BVMA implements OpInterface {
     private rs1: number;
     private rs2: number;
 
-    execute(core: Core){}
+    execute(core: Core){
+        throw new Error("Not implemented.");
+    }
     toString() {
         return `hfence.bvma ${IntRegNames[this.rs1]},${IntRegNames[this.rs2]}`;
     }
@@ -1181,7 +1320,9 @@ class HFENCE_GVMA implements OpInterface {
     private rs1: number;
     private rs2: number;
     
-    execute(core: Core){}
+    execute(core: Core){
+        throw new Error("Not implemented.");
+    }
     toString() {
         return `hfence.gvma ${IntRegNames[this.rs1]},${IntRegNames[this.rs2]}`;
     }

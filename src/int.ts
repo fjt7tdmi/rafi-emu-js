@@ -27,6 +27,30 @@ export function sub(x: Integer, y: Integer) {
     return new Integer(x.toNumber() - y.toNumber());
 }
 
+export function xor(x: Integer, y: Integer) {
+    return new Integer(x.toNumber() ^ y.toNumber());
+}
+
+export function or(x: Integer, y: Integer) {
+    return new Integer(x.toNumber() | y.toNumber());
+}
+
+export function and(x: Integer, y: Integer) {
+    return new Integer(x.toNumber() & y.toNumber());
+}
+
+export function leftShift(x: Integer, y: Integer) {
+    return new Integer(x.toNumber() << y.toNumber());
+}
+
+export function signedRightShift(x: Integer, y: Integer) {
+    return new Integer(x.toNumber() >> y.toNumber());
+}
+
+export function unsignedRightShift(x: Integer, y: Integer) {
+    return new Integer(x.toNumber() >>> y.toNumber());
+}
+
 export function equal(x: Integer, y: Integer) {
     return x.toNumber() == y.toNumber();
 }
